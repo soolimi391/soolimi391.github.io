@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로또 추천번호 받기</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #f5f8ff;
+      color: #1f2937;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem;
+      background: #ffffff;
+    }
+
+    .left {
+      flex: 1;
+      min-width: 300px;
+      padding: 2rem;
+    }
+
+    .left h1 {
+      font-size: 2rem;
+      color: #1d4ed8;
+      margin-bottom: 1rem;
+    }
+
+    .left img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 1rem;
+    }
+
+    .right {
+      flex: 1;
+      min-width: 300px;
+      padding: 2rem;
+      background: #e0ebff;
+      border-radius: 12px;
+    }
+
+    .right h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="tel"] {
+      padding: 0.8rem;
+      margin-top: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #1d4ed8;
+      color: white;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    /* 후기 섹션 */
+    .testimonials {
+      background: linear-gradient(to right, #f0f4ff, #ffffff);
+      padding: 2rem 0;
+      overflow: hidden;
+    }
+
+    .testimonial-track {
+      display: flex;
+      gap: 2rem;
+      width: max-content;
+      animation: scroll-left 25s linear infinite;
+    }
+
+    .testimonial {
+      flex: 0 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      min-width: 260px;
+      max-width: 280px;
+      font-size: 1rem;
+      text-align: left;
+      color: #1f2937;
+    }
+
+    .testimonial p {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .testimonial span {
+      display: block;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 렌딩 -->
+  <section class="container">
+    <div class="left">
+      <h1>가입 후 매주 로또 추천번호 받아가세요!</h1>
+      <p>당신의 행운을 위한 첫 걸음, 지금 신청하고 무료 추천 번호를 확인하세요.</p>
+      <img src="https://i.imgur.com/N2jtE5H.jpeg" alt="로또 이미지">
+    </div>
+    <div class="right">
+      <h2>신청 정보 입력</h2>
+      <form>
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="홍길동" required>
+
+        <label for="phone">전화번호</label>
+        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" maxlength="13" required 
+               oninput="autoHyphen(this)">
+
+        <button type="submit">추천번호 받기</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 실시간 후기 -->
+  <section class="testimonials">
+    <h2 style="text-align:center; font-size: 2rem; color:#1d4ed8; margin-bottom: 2rem;">✨ 실시간 당첨 후기 ✨</h2>
+    <div class="testimonial-track">
+      <div class="testimonial"><p>"정말 당첨됐어요! 추천 감사합니다!"</p><span>박** · 010-****-7564</span></div>
+      <div class="testimonial"><p>"매주 받아보고 있습니다. 믿음이 가요."</p><span>이** · 010-****-9482</span></div>
+      <div class="testimonial"><p>"3등 당첨! 믿기지 않아요."</p><span>김** · 010-****-1028</span></div>
+      <div class="testimonial"><p>"지인 추천으로 신청했는데 너무 만족합니다."</p><span>최** · 010-****-3097</span></div>
+      <div class="testimonial"><p>"번호 받아보고 일주일이 즐거워졌어요."</p><span>유** · 010-****-8205</span></div>
+      <div class="testimonial"><p>"고맙습니다. 덕분에 당첨 경험했어요."</p><span>장** · 010-****-6670</span></div>
+      <div class="testimonial"><p>"무료인데 퀄리티가 좋아요!"</p><span>한** · 010-****-7539</span></div>
+      <div class="testimonial"><p>"매주 기다려지는 서비스예요."</p><span>신** · 010-****-2741</span></div>
+      <div class="testimonial"><p>"이번엔 2등 노려봅니다!"</p><span>오** · 010-****-1254</span></div>
+      <div class="testimonial"><p>"계속 이용하게 되네요."</p><span>배** · 010-****-4123</span></div>
+      <div class="testimonial"><p>"와이프랑 같이 신청했어요!"</p><span>정** · 010-****-9230</span></div>
+      <div class="testimonial"><p>"추천번호 받고 바로 구매했어요!"</p><span>서** · 010-****-3001</span></div>
+    </div>
+  </section>
+
+  <script>
+    function autoHyphen(el) {
+      el.value = el.value
+        .replace(/[^0-9]/g, '')
+        .replace(/(^02|^01[0-9]{1}|[0-9]{3})([0-9]+)?([0-9]{4})$/, '$1-$2-$3')
+        .replace('--', '-');
+    }
+  </script>
+
+</body>
+</html>
