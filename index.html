@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>로또 상담 챗봇</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #f5f6fa;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      max-width: 700px;
+      width: 100%;
+      margin: 0 auto;
+      background: #fff;
+    }
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: #f0f2f5;
+    }
+    .message {
+      display: flex;
+      margin-bottom: 20px;
+      align-items: flex-start;
+    }
+    .message.bot { flex-direction: row; }
+    .message.user { flex-direction: row-reverse; }
+    .avatar {
+      width: 50px;
+      height: 50px;
+      margin: 0 10px;
+      flex-shrink: 0;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+    .bubble {
+      background: #fff;
+      border: 2px solid #2b79ff;
+      border-radius: 15px;
+      padding: 14px 16px;
+      font-size: 16px;
+      max-width: 80%;
+      line-height: 1.5;
+      position: relative;
+      word-break: break-word;
+    }
+    .bubble::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: -15px;
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 15px solid #fff;
+    }
+    .user .bubble {
+      background: #007BFF;
+      color: white;
+      border: none;
+    }
+    .user .bubble::before { display: none; }
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      background: #fff;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      outline: none;
+    }
+    .chat-input button {
+      margin-left: 10px;
+      padding: 0 20px;
+      font-size: 16px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .center-button {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(245, 246, 250, 0.9);
+      z-index: 999;
+    }
+    .center-button.show {
+      display: flex;
+    }
+    .center-button button {
+      background: #28a745;
+      color: white;
+      font-size: 20px;
+      padding: 16px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    @media (max-width: 768px) {
+      html, body {
+        height: 100dvh;
+        overflow: hidden;
+      }
+      .bubble { font-size: 15px; padding: 12px; max-width: 85%; }
+      .chat-input input { font-size: 15px; padding: 12px; }
+      .chat-input button { font-size: 15px; padding: 0 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="chat-box" id="chatBox">
+    <div class="message bot">
+      <div class="avatar"><img src="https://i.imgur.com/dBa600u.png" alt="상담원" /></div>
+      <div class="bubble">
+        안녕하세요!<br>
+        <strong style="color:#2b79ff;">로또 상담 챗봇</strong>입니다 😊<br>
+        무엇이든 물어보세요! <strong style="color:#e60000;">로또 추천번호</strong>도 알려드려요!<br>
+        예: '이번', '1234회차', '확률', '세금', '최대 당첨금'
+      </div>
+    </div>
+  </div>
+  <div class="chat-input" id="chatInput">
+    <input type="text" id="userInput" placeholder="메시지를 입력하세요..." onkeydown="if(event.key==='Enter') sendMessage();" />
+    <button onclick="sendMessage()">전송</button>
+  </div>
+</div>
+
+<div class="center-button" id="landingButton">
+  <button onclick="location.href='./landing.html'">로또 번호 추천 받으러 가기</button>
+</div>
+
+
+<!-- HEAD와 STYLE은 현재 상태 그대로 유지하세요 -->
+<!-- 여기에 JS 전체 추가 -->
+<script>
+    const chatBox = document.getElementById("chatBox");
+    const chatInput = document.getElementById("chatInput");
+    const landingButton = document.getElementById("landingButton");
+    let questionCount = 0;
+  
+    function appendMessage(content, type) {
+      const msg = document.createElement("div");
+      msg.className = "message " + type;
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      if (type === "bot") {
+        const img = document.createElement("img");
+        img.src = "https://i.imgur.com/dBa600u.png";
+        avatar.appendChild(img);
+      }
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.innerHTML = content;
+      if (type === "bot") {
+        msg.appendChild(avatar);
+        msg.appendChild(bubble);
+      } else {
+        msg.appendChild(bubble);
+        msg.appendChild(avatar);
+      }
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const text = input.value.trim();
+      if (!text) return;
+      appendMessage(text, "user");
+      input.value = "";
+  
+      questionCount++;
+      if (questionCount >= 3 || text.includes("추천")) {
+        chatInput.style.display = "none";
+        landingButton.classList.add("show");
+      }
+  
+      setTimeout(() => {
+        const msg = text.toLowerCase();
+  
+        // ✅ 최신 회차 당첨번호
+        if (msg.includes("번호") || msg.includes("이번") || msg.includes("당첨")) {
+          fetch("https://api.allorigins.win/get?url=" + encodeURIComponent("https://www.dhlottery.co.kr/common.do?method=main"))
+            .then(res => res.json())
+            .then(data => {
+              const html = data.contents;
+              const match = html.match(/<strong id="lottoDrwNo">(\d+)<\/strong>/);
+              if (match) {
+                const latestRound = match[1];
+                fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=' + latestRound)}`)
+                  .then(res => res.json())
+                  .then(data => {
+                    const lotto = JSON.parse(data.contents);
+                    if (lotto.returnValue === "success") {
+                      const nums = [lotto.drwtNo1, lotto.drwtNo2, lotto.drwtNo3, lotto.drwtNo4, lotto.drwtNo5, lotto.drwtNo6].join(', ');
+                      appendMessage(`🔔 <strong>${lotto.drwNo}회차 최신 당첨번호</strong><br>${nums} + 보너스 ${lotto.bnusNo}<br>1등 당첨금: <strong>${Number(lotto.firstWinamnt).toLocaleString()}원</strong>`, "bot");
+                    }
+                  });
+              } else {
+                appendMessage("최신 회차 정보를 가져오지 못했습니다.", "bot");
+              }
+            });
+          return;
+        }
+  
+        // ✅ 회차별 번호 + 당첨금
+        if (msg.match(/(\d+)[\s]*회차/)) {
+          const round = msg.match(/(\d+)[\s]*회차/)[1];
+          fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=' + round)}`)
+            .then(res => res.json())
+            .then(data => {
+              const lotto = JSON.parse(data.contents);
+              if (lotto.returnValue === "success") {
+                const nums = [lotto.drwtNo1, lotto.drwtNo2, lotto.drwtNo3, lotto.drwtNo4, lotto.drwtNo5, lotto.drwtNo6].join(', ');
+                appendMessage(`${round}회차 당첨번호는 <strong>${nums} + 보너스 ${lotto.bnusNo}</strong>입니다.<br>1등 당첨금: <strong>${Number(lotto.firstWinamnt).toLocaleString()}원</strong>`, "bot");
+              } else {
+                appendMessage(`${round}회차 정보를 찾을 수 없습니다.`, "bot");
+              }
+            })
+            .catch(() => appendMessage("데이터를 불러오는 중 오류가 발생했습니다.", "bot"));
+          return;
+        }
+  
+        // ✅ Q&A 키워드 응답
+        const qnaList = [
+          { kw: ["확률"], msg: "로또 1등 당첨 확률은 약 1/8,145,060 입니다." },
+          { kw: ["세금"], msg: "당첨금의 약 33%는 세금으로 공제됩니다." },
+          { kw: ["판매"], msg: "판매 시간은 오전 6시~자정, 토요일은 오후 8시까지입니다." },
+          { kw: ["가격", "얼마"], msg: "로또 1게임은 1,000원입니다." },
+          { kw: ["최대", "당첨금"], msg: "역대 최고 당첨금은 2003년 4월 약 407억 원입니다!" },
+          { kw: ["보너스"], msg: "보너스 번호는 2등을 결정하는 추가 번호입니다." },
+          { kw: ["요일"], msg: "로또 추첨은 매주 토요일입니다." },
+          { kw: ["문의"], msg: "문의 접수를 위해 이름과 전화번호를 입력해주세요." },
+          { kw: ["후기"], msg: "최근 당첨자: 김*수님, 정*영님 - 축하드립니다! 🎉" }
+        ];
+  
+        for (let item of qnaList) {
+          if (item.kw.some(k => msg.includes(k))) {
+            appendMessage(item.msg, "bot");
+            return;
+          }
+        }
+  
+        appendMessage("궁금한 것을 말씀해보세요! 예: '이번 당첨번호', '확률', '세금', '1234회차'", "bot");
+      }, 500);
+    }
+  </script>
+  
+  
+
+</body>
+</html>
