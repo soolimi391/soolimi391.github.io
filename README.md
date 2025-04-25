@@ -161,7 +161,7 @@
 </div>
 
 <div class="center-button" id="landingButton">
-  <button onclick="location.href='./landing.html'">로또 번호 추천 받으러 가기</button>
+  <button onclick="location.href='https://soolimi391.github.io/landing.html'">로또 번호 추천 받으러 가기</button>
 </div>
 
 
