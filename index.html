@@ -140,6 +140,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <div class="chat-container">
@@ -148,9 +149,10 @@
       <div class="avatar"><img src="https://i.imgur.com/dBa600u.png" alt="상담원" /></div>
       <div class="bubble">
         안녕하세요!<br>
-        <strong style="color:#2b79ff;">로또 상담 챗봇</strong>입니다 😊<br>
-        무엇이든 물어보세요! <strong style="color:#e60000;">로또 추천번호</strong>도 알려드려요!<br>
-        예: '이번', '1234회차', '확률', '세금', '최대 당첨금'
+<strong style="color:#2b79ff;">로또 상담 챗봇</strong>입니다 😊<br>
+무엇이든 물어보세요! <strong style="color:#e60000;">로또 추천번호</strong>도 알려드려요!<br>
+예:'추천번호', '이번', '1234회차', '확률', '세금', '최대 당첨금', '당첨금 수령', '보너스 번호', '구입 방법', '판매 시간', '추첨일', '연금복권', '자동', '수동'
+
       </div>
     </div>
   </div>
@@ -164,124 +166,152 @@
   <button onclick="location.href='./landing.html'">로또 번호 추천 받으러 가기</button>
 </div>
 
-
-<!-- HEAD와 STYLE은 현재 상태 그대로 유지하세요 -->
-<!-- 여기에 JS 전체 추가 -->
 <script>
-    const chatBox = document.getElementById("chatBox");
-    const chatInput = document.getElementById("chatInput");
-    const landingButton = document.getElementById("landingButton");
-    let questionCount = 0;
-  
-    function appendMessage(content, type) {
-      const msg = document.createElement("div");
-      msg.className = "message " + type;
-      const avatar = document.createElement("div");
-      avatar.className = "avatar";
-      if (type === "bot") {
-        const img = document.createElement("img");
-        img.src = "https://i.imgur.com/dBa600u.png";
-        avatar.appendChild(img);
+const chatBox = document.getElementById("chatBox");
+const chatInput = document.getElementById("chatInput");
+const landingButton = document.getElementById("landingButton");
+let questionCount = 0;
+
+const keywords = {
+  "확률": "로또 1등 당첨 확률은 1/8,145,060입니다.",
+  "당첨확률": "1등 확률은 1/8,145,060로 매우 희박합니다.",
+  "당첨금": "당첨금은 판매량과 당첨자 수에 따라 변동됩니다.",
+  "1등 당첨금": "1등 당첨금은 수십억 원에 달할 수 있습니다.",
+  "당첨자 수": "매주 당첨자 수는 다릅니다.",
+  "자동": "자동과 수동의 당첨 확률은 동일합니다.",
+  "수동": "자동과 수동 모두 확률은 같습니다.",
+  "구입 방법": "판매점 또는 동행복권 공식사이트에서 구매할 수 있습니다.",
+  "마감 시간": "매주 토요일 오후 8시까지 구입 가능합니다.",
+  "추첨일": "매주 토요일 오후 8시 35분에 추첨합니다.",
+  "번호 생성기": "랜덤 추천 번호를 생성할 수 있습니다! (추천 버튼)",
+  "2등 당첨조건": "5개 번호+보너스 번호를 맞추면 2등입니다.",
+  "당첨금 수령": "농협은행 또는 판매점에서 수령할 수 있습니다.",
+  "세금": "3억 초과 당첨금은 33%, 이하는 22% 세율이 적용됩니다.",
+  "연금복권": "매월 500만 원을 20년간 지급합니다.",
+  "로또 vs 연금복권": "로또는 일시불, 연금복권은 분할 지급입니다.",
+  "로또 역사": "2002년 12월 7일에 첫 발행되었습니다.",
+  "최대 당첨금": "역대 최대 당첨금은 407억 원입니다.",
+  "복권 종류": "로또, 연금복권, 스피또 등이 있습니다.",
+  "스피또": "즉석 긁는 복권입니다.",
+  "5등 당첨": "3개 번호만 맞으면 5등입니다.",
+  "2등 확률": "약 1/1,357,510 확률입니다.",
+  "3등 확률": "약 1/35,724 확률입니다.",
+  "4등 확률": "약 1/733 확률입니다.",
+  "5등 확률": "약 1/45 확률입니다.",
+  "판매 시간": "판매는 오전 6시~자정까지 가능합니다.",
+  "로또 가격": "로또 1게임 가격은 1,000원입니다.",
+  "추천 번호": "랜덤 추천 서비스를 이용할 수 있습니다.",
+  "번호 조합": "1~45번 중 6개를 고릅니다."
+};
+
+function appendMessage(content, type) {
+  const msg = document.createElement("div");
+  msg.className = "message " + type;
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  if (type === "bot") {
+    const img = document.createElement("img");
+    img.src = "https://i.imgur.com/dBa600u.png";
+    avatar.appendChild(img);
+  }
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.innerHTML = content;
+  if (type === "bot") {
+    msg.appendChild(avatar);
+    msg.appendChild(bubble);
+  } else {
+    msg.appendChild(bubble);
+    msg.appendChild(avatar);
+  }
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function findKeywordAnswer(message) {
+  const words = message.trim().split(/\s+/).reverse(); // 띄어쓰기로 단어 분리 후 뒤집기
+  for (const word of words) {
+    for (const key in keywords) {
+      if (key.includes(word) || word.includes(key)) { 
+        return keywords[key];
       }
-      const bubble = document.createElement("div");
-      bubble.className = "bubble";
-      bubble.innerHTML = content;
-      if (type === "bot") {
-        msg.appendChild(avatar);
-        msg.appendChild(bubble);
-      } else {
-        msg.appendChild(bubble);
-        msg.appendChild(avatar);
-      }
-      chatBox.appendChild(msg);
-      chatBox.scrollTop = chatBox.scrollHeight;
     }
-  
-    function sendMessage() {
-      const input = document.getElementById("userInput");
-      const text = input.value.trim();
-      if (!text) return;
-      appendMessage(text, "user");
-      input.value = "";
-  
-      questionCount++;
-      if (questionCount >= 3 || text.includes("추천")) {
-        chatInput.style.display = "none";
-        landingButton.classList.add("show");
-      }
-  
-      setTimeout(() => {
-        const msg = text.toLowerCase();
-  
-        // ✅ 최신 회차 당첨번호
-        if (msg.includes("번호") || msg.includes("이번") || msg.includes("당첨")) {
-          fetch("https://api.allorigins.win/get?url=" + encodeURIComponent("https://www.dhlottery.co.kr/common.do?method=main"))
-            .then(res => res.json())
-            .then(data => {
-              const html = data.contents;
-              const match = html.match(/<strong id="lottoDrwNo">(\d+)<\/strong>/);
-              if (match) {
-                const latestRound = match[1];
-                fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=' + latestRound)}`)
-                  .then(res => res.json())
-                  .then(data => {
-                    const lotto = JSON.parse(data.contents);
-                    if (lotto.returnValue === "success") {
-                      const nums = [lotto.drwtNo1, lotto.drwtNo2, lotto.drwtNo3, lotto.drwtNo4, lotto.drwtNo5, lotto.drwtNo6].join(', ');
-                      appendMessage(`🔔 <strong>${lotto.drwNo}회차 최신 당첨번호</strong><br>${nums} + 보너스 ${lotto.bnusNo}<br>1등 당첨금: <strong>${Number(lotto.firstWinamnt).toLocaleString()}원</strong>`, "bot");
-                    }
-                  });
-              } else {
-                appendMessage("최신 회차 정보를 가져오지 못했습니다.", "bot");
-              }
-            });
-          return;
-        }
-  
-        // ✅ 회차별 번호 + 당첨금
-        if (msg.match(/(\d+)[\s]*회차/)) {
-          const round = msg.match(/(\d+)[\s]*회차/)[1];
-          fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=' + round)}`)
-            .then(res => res.json())
-            .then(data => {
-              const lotto = JSON.parse(data.contents);
-              if (lotto.returnValue === "success") {
-                const nums = [lotto.drwtNo1, lotto.drwtNo2, lotto.drwtNo3, lotto.drwtNo4, lotto.drwtNo5, lotto.drwtNo6].join(', ');
-                appendMessage(`${round}회차 당첨번호는 <strong>${nums} + 보너스 ${lotto.bnusNo}</strong>입니다.<br>1등 당첨금: <strong>${Number(lotto.firstWinamnt).toLocaleString()}원</strong>`, "bot");
-              } else {
-                appendMessage(`${round}회차 정보를 찾을 수 없습니다.`, "bot");
-              }
-            })
-            .catch(() => appendMessage("데이터를 불러오는 중 오류가 발생했습니다.", "bot"));
-          return;
-        }
-  
-        // ✅ Q&A 키워드 응답
-        const qnaList = [
-          { kw: ["확률"], msg: "로또 1등 당첨 확률은 약 1/8,145,060 입니다." },
-          { kw: ["세금"], msg: "당첨금의 약 33%는 세금으로 공제됩니다." },
-          { kw: ["판매"], msg: "판매 시간은 오전 6시~자정, 토요일은 오후 8시까지입니다." },
-          { kw: ["가격", "얼마"], msg: "로또 1게임은 1,000원입니다." },
-          { kw: ["최대", "당첨금"], msg: "역대 최고 당첨금은 2003년 4월 약 407억 원입니다!" },
-          { kw: ["보너스"], msg: "보너스 번호는 2등을 결정하는 추가 번호입니다." },
-          { kw: ["요일"], msg: "로또 추첨은 매주 토요일입니다." },
-          { kw: ["문의"], msg: "문의 접수를 위해 이름과 전화번호를 입력해주세요." },
-          { kw: ["후기"], msg: "최근 당첨자: 김*수님, 정*영님 - 축하드립니다! 🎉" }
-        ];
-  
-        for (let item of qnaList) {
-          if (item.kw.some(k => msg.includes(k))) {
-            appendMessage(item.msg, "bot");
-            return;
+  }
+  return null;
+}
+
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  const text = input.value.trim();
+  if (!text) return;
+  appendMessage(text, "user");
+  input.value = "";
+
+  questionCount++;
+  if (questionCount >= 3 || text.includes("추천")) {
+    chatInput.style.display = "none";
+    landingButton.classList.add("show");
+  }
+
+  setTimeout(() => {
+    const msg = text.toLowerCase();
+
+    // 1️⃣ 먼저 키워드 매칭
+    const answer = findKeywordAnswer(text);
+    if (answer) {
+      appendMessage(answer, "bot");
+      return;
+    }
+
+    // 2️⃣ 그다음 최신 회차 번호 조회
+    if (msg.includes("번호") || msg.includes("이번") || msg.includes("당첨")) {
+      fetch("https://api.allorigins.win/get?url=" + encodeURIComponent("https://www.dhlottery.co.kr/common.do?method=main"))
+        .then(res => res.json())
+        .then(data => {
+          const html = data.contents;
+          const match = html.match(/<strong id="lottoDrwNo">(\d+)<\/strong>/);
+          if (match) {
+            const latestRound = match[1];
+            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=' + latestRound)}`)
+              .then(res => res.json())
+              .then(data => {
+                const lotto = JSON.parse(data.contents);
+                if (lotto.returnValue === "success") {
+                  const nums = [lotto.drwtNo1, lotto.drwtNo2, lotto.drwtNo3, lotto.drwtNo4, lotto.drwtNo5, lotto.drwtNo6].join(', ');
+                  appendMessage(`🔔 <strong>${lotto.drwNo}회차 최신 당첨번호</strong><br>${nums} + 보너스 ${lotto.bnusNo}<br>1등 당첨금: <strong>${Number(lotto.firstWinamnt).toLocaleString()}원</strong>`, "bot");
+                }
+              });
+          } else {
+            appendMessage("최신 회차 정보를 가져오지 못했습니다.", "bot");
           }
-        }
-  
-        appendMessage("궁금한 것을 말씀해보세요! 예: '이번 당첨번호', '확률', '세금', '1234회차'", "bot");
-      }, 500);
+        });
+      return;
     }
-  </script>
-  
-  
+
+    // 3️⃣ 마지막 - 회차별 번호 조회
+    if (msg.match(/(\d+)\s*회차/)) {
+      const round = msg.match(/(\d+)\s*회차/)[1];
+      fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=' + round)}`)
+        .then(res => res.json())
+        .then(data => {
+          const lotto = JSON.parse(data.contents);
+          if (lotto.returnValue === "success") {
+            const nums = [lotto.drwtNo1, lotto.drwtNo2, lotto.drwtNo3, lotto.drwtNo4, lotto.drwtNo5, lotto.drwtNo6].join(', ');
+            appendMessage(`${round}회차 당첨번호는 <strong>${nums} + 보너스 ${lotto.bnusNo}</strong>입니다.<br>1등 당첨금: <strong>${Number(lotto.firstWinamnt).toLocaleString()}원</strong>`, "bot");
+          } else {
+            appendMessage(`${round}회차 정보를 찾을 수 없습니다.`, "bot");
+          }
+        })
+        .catch(() => appendMessage("데이터를 불러오는 중 오류가 발생했습니다.", "bot"));
+      return;
+    }
+
+    // 기본 안내
+    appendMessage("궁금한 것을 말씀해보세요! 예: '이번', '1234회차', '확률', '세금', '최대 당첨금'", "bot");
+  }, 400);
+}
+
+</script>
 
 </body>
 </html>
