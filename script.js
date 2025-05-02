@@ -79,6 +79,9 @@ function appendMessage(content, type) {
         msg.appendChild(avatar);
     }
     chatBox.appendChild(msg);
+    setTimeout(() => {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 100); 
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
@@ -931,6 +934,7 @@ function sendMessage() {
                             `• '1234회차'<br>` +
                             `• '1000~1050'<br>` +
                             `• '전회차'<br>` +
+                            `• '최근' (최근 10주 기준 분석)<br>` +
                             `• '최신' (현재 최신 회차: <strong>${latestRound}회차</strong>)`;
 
                         if (key.includes("핫") || key.includes("콜드")) {
