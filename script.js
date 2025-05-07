@@ -79,10 +79,10 @@ function appendMessage(content, type) {
         msg.appendChild(avatar);
     }
     chatBox.appendChild(msg);
+     // ✅ 자동 스크롤: 답변이 추가될 때마다 최하단으로 이동
     setTimeout(() => {
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }, 100); 
-    chatBox.scrollTop = chatBox.scrollHeight;
+        chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: "smooth" });
+    }, 100);
 }
 
 // ✅ 소수 판별
