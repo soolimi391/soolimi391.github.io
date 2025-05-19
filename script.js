@@ -855,7 +855,7 @@ function sendMessage() {
     input.value = "";
 
     questionCount++;
-    if (questionCount >= 5 || text.includes("추천")) {
+    if (questionCount >= 3 || text.includes("추천")) {
         chatInput.style.display = "none";
         landingButton.classList.add("show");
     }
