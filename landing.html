@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>로또 추천번호 받기</title>
   <style>
     body {
@@ -86,7 +87,6 @@
       background-color: #2563eb;
     }
 
-    /* 후기 섹션 */
     .testimonials {
       background: linear-gradient(to right, #f0f4ff, #ffffff);
       padding: 2rem 0;
@@ -104,7 +104,7 @@
       flex: 0 0 auto;
       background: #fff;
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       padding: 1.5rem;
       min-width: 260px;
       max-width: 280px;
@@ -126,11 +126,17 @@
     }
 
     @keyframes scroll-left {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- 상단 렌딩 -->
@@ -142,20 +148,20 @@
     </div>
     <div class="right">
       <h2>신청 정보 입력</h2>
-      <form action="https://script.google.com/macros/s/AKfycbwaGP_cY17UJG-ggqN64osVfVz2OM3ajMUDXujxuq7j06JdrxLIHMHBdv6CCNQimTeQ/exec" method="POST">
+      <form id="lottoForm">
         <label for="name">이름</label>
         <input type="text" id="name" name="name" placeholder="홍길동" required>
 
         <label for="phone">전화번호</label>
-        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" maxlength="13" required 
-               oninput="autoHyphen(this)">
+        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" maxlength="13" required
+          oninput="autoHyphen(this)">
 
         <button type="submit">추천번호 받기</button>
       </form>
     </div>
   </section>
 
-  <!-- 실시간 후기 -->
+  <!-- 후기 -->
   <section class="testimonials">
     <h2 style="text-align:center; font-size: 2rem; color:#1d4ed8; margin-bottom: 2rem;">✨ 실시간 당첨 후기 ✨</h2>
     <div class="testimonial-track">
@@ -181,7 +187,24 @@
         .replace(/(^02|^01[0-9]{1}|[0-9]{3})([0-9]+)?([0-9]{4})$/, '$1-$2-$3')
         .replace('--', '-');
     }
-  </script>
 
+    document.getElementById("lottoForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch("https://script.google.com/macros/s/AKfycbypH_42Gugbj2yGx71cn_67S0YqnZRQQ3vDGLB_80fJRU8TOCoTRPlEfHdCfqeCgzNG/exec", {
+        method: "POST",
+        body: formData,
+        mode: "no-cors"
+      }).then(() => {
+        window.location.href = "https://soolimi391.github.io/";
+      }).catch(err => {
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+        console.error(err);
+      });
+    });
+  </script>
 </body>
+
 </html>
