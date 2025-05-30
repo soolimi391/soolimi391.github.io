@@ -142,8 +142,8 @@
   <!-- 상단 렌딩 -->
   <section class="container">
     <div class="left">
-      <h1>가입 후 매주 로또 추천번호 받아가세요!</h1>
-      <p>당신의 행운을 위한 첫 걸음, 지금 신청하고 무료 추천 번호를 확인하세요.</p>
+      <h1>한국의 전통 있는 통계 시스템을 기반으로</h1>
+      <p> 문자로 딱2주간만 5조합씩 추천조합 드립니다.</p>
       <img src="https://i.imgur.com/N2jtE5H.jpeg" alt="로또 이미지">
     </div>
     <div class="right">
@@ -157,7 +157,8 @@
           oninput="autoHyphen(this)">
 
         <label style="margin-top: 1.5rem;">
-          <input type="checkbox" name="privacyConsent" id="privacyCheck" required>
+          <input type="checkbox" name="privacyConsent" id="privacyCheck" required checked>
+
           [필수] 개인정보 수집 및 이용에 동의합니다.
         </label>
         <div style="font-size: 0.9rem; margin-left: 1.5rem; margin-bottom: 0.5rem;">
@@ -165,7 +166,7 @@
         </div>
 
         <label style="margin-top: 1rem;">
-          <input type="checkbox" name="marketingConsent" id="marketingCheck">
+          <input type="checkbox" name="marketingConsent" id="marketingCheck" checked>
           [선택] 마케팅 정보 수신에 동의합니다. <br>&nbsp; &nbsp; &nbsp; (문자, 전화, 카카오톡 등)
         </label>
         <div style="font-size: 0.9rem; margin-left: 1.5rem;">
@@ -232,22 +233,35 @@
 
 
     document.getElementById("lottoForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
+  e.preventDefault();
+  const form = e.target;
+  const formData = new FormData(form);
 
-      fetch("https://script.google.com/macros/s/AKfycbypH_42Gugbj2yGx71cn_67S0YqnZRQQ3vDGLB_80fJRU8TOCoTRPlEfHdCfqeCgzNG/exec", {
-        method: "POST",
-        body: formData,
-        mode: "no-cors"
-      }).then(() => {
-        window.location.href = "https://soolimi391.github.io/";
-      }).catch(err => {
-        alert("오류가 발생했습니다. 다시 시도해주세요.");
-        console.error(err);
-      });
-    });
+  // ✅ 체크박스 상태 확인
+  const privacyChecked = document.getElementById("privacyCheck").checked;
+  const marketingChecked = document.getElementById("marketingCheck").checked;
 
+  // ✅ 필수 동의 여부 확인
+  if (!privacyChecked) {
+    alert("개인정보 수집 및 이용에 동의하셔야 추천번호를 받을 수 있습니다.");
+    return;
+  }
+
+  // ✅ 체크 상태를 텍스트로 변환해 추가
+  formData.append("privacyConsent", privacyChecked ? "동의함" : "미동의");
+  formData.append("marketingConsent", marketingChecked ? "동의함" : "미동의");
+
+  fetch("https://script.google.com/macros/s/AKfycbypH_42Gugbj2yGx71cn_67S0YqnZRQQ3vDGLB_80fJRU8TOCoTRPlEfHdCfqeCgzNG/exec", {
+    method: "POST",
+    body: formData,
+    mode: "no-cors"
+  }).then(() => {
+    window.location.href = "https://soolimi391.github.io/";
+  }).catch(err => {
+    alert("오류가 발생했습니다. 다시 시도해주세요.");
+    console.error(err);
+  });
+});
     const fullTexts = {
       privacy: `📄 개인정보취급방침
 
