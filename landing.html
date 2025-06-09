@@ -302,14 +302,15 @@
     }
   </script>
 
-  <script>
+ <script>
   (function () {
     const urlParams = new URLSearchParams(window.location.search);
-    const ref = urlParams.get('ref') || 'tiktok';  // 쿼리 없으면 'tiktok'으로 기록
+    const ref = urlParams.get('ref') || 'tiktok';
 
     fetch("https://script.google.com/macros/s/AKfycbwWhLq61Cace24U-8HlAaU2kqvojxoiBaYyvUg_3X4fkXLHinzdYCyI2Jrgqpt7y05r/exec?ref=" + encodeURIComponent(ref));
   })();
 </script>
+
 
 
 </body>
