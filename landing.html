@@ -233,35 +233,35 @@
 
 
     document.getElementById("lottoForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const form = e.target;
-  const formData = new FormData(form);
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
 
-  // ✅ 체크박스 상태 확인
-  const privacyChecked = document.getElementById("privacyCheck").checked;
-  const marketingChecked = document.getElementById("marketingCheck").checked;
+      // ✅ 체크박스 상태 확인
+      const privacyChecked = document.getElementById("privacyCheck").checked;
+      const marketingChecked = document.getElementById("marketingCheck").checked;
 
-  // ✅ 필수 동의 여부 확인
-  if (!privacyChecked) {
-    alert("개인정보 수집 및 이용에 동의하셔야 추천번호를 받을 수 있습니다.");
-    return;
-  }
+      // ✅ 필수 동의 여부 확인
+      if (!privacyChecked) {
+        alert("개인정보 수집 및 이용에 동의하셔야 추천번호를 받을 수 있습니다.");
+        return;
+      }
 
-  // ✅ 체크 상태를 텍스트로 변환해 추가
-  formData.append("privacyConsent", privacyChecked ? "동의함" : "미동의");
-  formData.append("marketingConsent", marketingChecked ? "동의함" : "미동의");
+      // ✅ 체크 상태를 텍스트로 변환해 추가
+      formData.append("privacyConsent", privacyChecked ? "동의함" : "미동의");
+      formData.append("marketingConsent", marketingChecked ? "동의함" : "미동의");
 
-  fetch("https://script.google.com/macros/s/AKfycbxq6_xnfFq7Xnz82S7XcY8tWqljBa-ckrWR9jCFVwimfa2dTB2Z4ZDQNXzcHML-NuJL/exec", {
-    method: "POST",
-    body: formData,
-    mode: "no-cors"
-  }).then(() => {
-    window.location.href = "https://soolimi391.github.io/";
-  }).catch(err => {
-    alert("오류가 발생했습니다. 다시 시도해주세요.");
-    console.error(err);
-  });
-});
+      fetch("https://script.google.com/macros/s/AKfycbxq6_xnfFq7Xnz82S7XcY8tWqljBa-ckrWR9jCFVwimfa2dTB2Z4ZDQNXzcHML-NuJL/exec", {
+        method: "POST",
+        body: formData,
+        mode: "no-cors"
+      }).then(() => {
+        window.location.href = "https://soolimi391.github.io/";
+      }).catch(err => {
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+        console.error(err);
+      });
+    });
     const fullTexts = {
       privacy: `📄 개인정보취급방침
 
@@ -312,6 +312,15 @@
       <div id="modalContent" style="white-space:pre-wrap; font-size:0.95rem; color:#1f2937;"></div>
     </div>
   </div>
+  <script>
+    (function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get('ref') || 'tiktok';  // 쿼리 없으면 'tiktok'으로 기록
+
+      fetch("https://script.google.com/macros/s/AKfycbyjc_2rI6rop4vLeuXtUZsBi4rfyWF0okPCde6aCpSTTDMPJtmW9yxUqY9_DbgDFH3_/exec?ref=" + encodeURIComponent(ref));
+    })();
+  </script>
+
 </body>
 
 </html>
