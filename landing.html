@@ -139,6 +139,7 @@
 
 <body>
 
+
   <!-- 상단 렌딩 -->
   <section class="container">
     <div class="left">
@@ -223,6 +224,16 @@
   </section>
 
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get('ref') || 'tiktok';
+
+      fetch("https://script.google.com/macros/s/AKfycbwWhLq61Cace24U-8HlAaU2kqvojxoiBaYyvUg_3X4fkXLHinzdYCyI2Jrgqpt7y05r/exec?ref=" + encodeURIComponent(ref), {
+        method: "GET",
+        mode: "no-cors"
+      });
+    });
+
     function autoHyphen(el) {
       el.value = el.value
         .replace(/[^0-9]/g, '')
@@ -302,14 +313,51 @@
     }
   </script>
 
- <script>
-  (function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const ref = urlParams.get('ref') || 'tiktok';
+  <!-- ✅ 반응형 모달창 -->
+<div id="modalOverlay" style="
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
+">
+  <div style="
+    background: white;
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  ">
+    <button onclick="closeModal()" style="
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: #1d4ed8;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      z-index: 1001;
+    ">닫기</button>
 
-    fetch("https://script.google.com/macros/s/AKfycbwWhLq61Cace24U-8HlAaU2kqvojxoiBaYyvUg_3X4fkXLHinzdYCyI2Jrgqpt7y05r/exec?ref=" + encodeURIComponent(ref));
-  })();
-</script>
+    <div id="modalContent" style="white-space: pre-line; padding-top: 1.5rem;"></div>
+  </div>
+</div>
 
 
 
