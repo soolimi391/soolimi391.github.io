@@ -258,6 +258,13 @@
       const countedRef = rawRef ? rawRef.split('_')[0] : '기타';
       const fullRef = rawRef || '기타';
       document.getElementById("refInput").value = fullRef;
+
+      fetch("https://script.google.com/macros/s/AKfycbwWhLq61Cace24U-8HlAaU2kqvojxoiBaYyvUg_3X4fkXLHinzdYCyI2Jrgqpt7y05r/exec?ref=" + encodeURIComponent(countedRef))
+      .then(res => res.text())
+      .then(msg => console.log("📈 유입통계 기록 완료:", msg))
+      .catch(err => console.warn("유입통계 기록 실패:", err));
+
+
       fetch("https://script.google.com/macros/s/AKfycbze-R_fpvRcagyzQRNXA7KcZSOQ3bC7Yerpc43zPBdTS2Zf_A4GCV_xKB_5Hv3T7Fcv/exec?ref=" + encodeURIComponent(fullRef))
       .then(res => res.text())
       .then(msg => {
