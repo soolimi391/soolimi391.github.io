@@ -258,7 +258,7 @@
       const countedRef = rawRef ? rawRef.split('_')[0] : '기타';
       const fullRef = rawRef || '기타';
       document.getElementById("refInput").value = fullRef;
-      fetch("https://script.google.com/macros/s/AKfycbxq6_xnfFq7Xnz82S7XcY8tWqljBa-ckrWR9jCFVwimfa2dTB2Z4ZDQNXzcHML-NuJL/exec?ref=" + encodeURIComponent(fullRef))
+      fetch("https://script.google.com/macros/s/AKfycbze-R_fpvRcagyzQRNXA7KcZSOQ3bC7Yerpc43zPBdTS2Zf_A4GCV_xKB_5Hv3T7Fcv/exec?ref=" + encodeURIComponent(fullRef))
       .then(res => res.text())
       .then(msg => {
         if (msg.trim()) {
@@ -301,7 +301,7 @@
       formData.append("privacyConsent", privacyChecked ? "동의함" : "미동의");
       formData.append("marketingConsent", marketingChecked ? "동의함" : "미동의");
 
-      fetch("https://script.google.com/macros/s/AKfycbxq6_xnfFq7Xnz82S7XcY8tWqljBa-ckrWR9jCFVwimfa2dTB2Z4ZDQNXzcHML-NuJL/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbze-R_fpvRcagyzQRNXA7KcZSOQ3bC7Yerpc43zPBdTS2Zf_A4GCV_xKB_5Hv3T7Fcv/exec", {
         method: "POST",
         body: formData,
         mode: "no-cors"
