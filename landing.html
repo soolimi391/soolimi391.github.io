@@ -65,6 +65,18 @@
       margin-bottom: 1rem;
     }
 
+    #refMessageBox {
+      background-color: #e0f2fe;
+      color: #0369a1;
+      border-left: 6px solid #0284c7;
+      padding: 1rem 1.2rem;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
     form {
       display: flex;
       flex-direction: column;
@@ -94,6 +106,8 @@
       border-radius: 8px;
       cursor: pointer;
     }
+    
+
 
     button:hover {
       background-color: #2563eb;
@@ -160,7 +174,9 @@
     </div>
     <div class="right">
       <h2>신청 정보 입력</h2>
+      <div id="refMessageBox" style="display: none;"></div>
       <form id="lottoForm">
+        <input type="hidden" id="refInput" name="ref" value="">
         <label for="name">이름</label>
         <input type="text" id="name" name="name" placeholder="홍길동" required>
 
@@ -236,15 +252,27 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+    
       const urlParams = new URLSearchParams(window.location.search);
-      const ref = urlParams.get('ref') || 'tiktok';
-
-      fetch("https://script.google.com/macros/s/AKfycbwWhLq61Cace24U-8HlAaU2kqvojxoiBaYyvUg_3X4fkXLHinzdYCyI2Jrgqpt7y05r/exec?ref=" + encodeURIComponent(ref), {
-        method: "GET",
-        mode: "no-cors"
+      const rawRef = urlParams.get('ref');
+      const countedRef = rawRef ? rawRef.split('_')[0] : '기타';
+      const fullRef = rawRef || '기타';
+      document.getElementById("refInput").value = fullRef;
+      fetch("https://script.google.com/macros/s/AKfycbxq6_xnfFq7Xnz82S7XcY8tWqljBa-ckrWR9jCFVwimfa2dTB2Z4ZDQNXzcHML-NuJL/exec?ref=" + encodeURIComponent(fullRef))
+      .then(res => res.text())
+      .then(msg => {
+        if (msg.trim()) {
+          const box = document.getElementById("refMessageBox");
+          box.innerHTML = msg;
+          box.style.display = "block";
+        }
+      })
+      .catch(err => {
+        console.warn("분석 문구 로딩 실패:", err);
       });
-    });
 
+      
+    });    
     function autoHyphen(el) {
       el.value = el.value
         .replace(/[^0-9]/g, '')
