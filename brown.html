@@ -1,113 +1,430 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>BROWN ROTISSERIE</title>
   <meta name="description" content="브라운 로티세리 — 전기구이통닭 브랜드 소개 홈페이지" />
+
+  <!-- 속도 최적화: 드라이브/썸네일 CDN 미리연결 -->
+  <link rel="dns-prefetch" href="//drive.google.com">
+  <link rel="dns-prefetch" href="//lh3.googleusercontent.com">
+  <link rel="preconnect" href="https://drive.google.com">
+  <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
+
   <style>
-    :root{
-      --brand-start:#FF7A1A;
-      --brand-end:#D72600;
-      --ink:#111111;
-      --paper:#ffffff;
-      --teal:#0CA1B1;
-      --green:#12763D;
-      --yellow:#F7C63C;
-      --header-h:64px;
-      --maxw:1200px;
-      --radius:16px;
-      --shadow:0 8px 24px rgba(0,0,0,.08);
+    :root {
+      --brand-start: #FF7A1A;
+      --brand-end: #D72600;
+      --ink: #111111;
+      --paper: #ffffff;
+      --teal: #0CA1B1;
+      --green: #12763D;
+      --yellow: #F7C63C;
+      --header-h: 64px;
+      --maxw: 1200px;
+      --radius: 16px;
+      --shadow: 0 8px 24px rgba(0, 0, 0, .08);
     }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
-    body{margin:0;font-family: Pretendard, "Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;color:var(--ink);background:#fff;-webkit-text-size-adjust:100%;}
-    img,svg{max-width:100%;height:auto;display:block}
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: Pretendard, "Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color: var(--ink);
+      background: #fff;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    img,
+    svg {
+      max-width: 100%;
+      height: auto;
+      display: block
+    }
 
     /* ===== Header ===== */
-    .header{position:sticky;top:0;z-index:50;background:linear-gradient(90deg,var(--brand-start),var(--brand-end));box-shadow:0 4px 10px rgba(215,38,0,.18);padding-top:env(safe-area-inset-top)}
-    .header-inner{height:var(--header-h);display:flex;align-items:center;gap:16px;justify-content:space-between;padding:0 16px;max-width:var(--maxw);margin:0 auto}
-    .brand{font-family: Impact, Bebas Neue, Oswald, "Arial Black", sans-serif;font-weight:900;letter-spacing:.8px;font-size: clamp(18px, 2.4vw, 28px);color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.18);white-space:nowrap}
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: linear-gradient(90deg, var(--brand-start), var(--brand-end));
+      box-shadow: 0 4px 10px rgba(215, 38, 0, .18);
+      padding-top: env(safe-area-inset-top)
+    }
 
-    nav{display:flex;align-items:center;gap:28px}
-    .nav-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:1000}
-    .nav-backdrop.show{display:block}
-    body.no-scroll{overflow:hidden}
-    nav a{color:#fff;text-decoration:none;font-weight:700;opacity:.95;padding:12px 6px;border-radius:10px;min-height:44px;display:flex;align-items:center}
-    nav a:hover, nav a.active{opacity:1;background:rgba(0,0,0,.08)}
-    .phone{margin-left:8px;background:#111;color:#fff;border-radius:999px;padding:10px 18px;font-weight:900;letter-spacing:.5px;text-decoration:none;box-shadow:inset 0 -2px 0 rgba(255,255,255,.06);min-height:44px;display:flex;align-items:center}
+    .header-inner {
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: space-between;
+      padding: 0 16px;
+      max-width: var(--maxw);
+      margin: 0 auto
+    }
 
-    .menu-toggle{display:none;background:#111;color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:900;line-height:1;min-width:44px;min-height:44px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    .brand {
+      font-family: Impact, Bebas Neue, Oswald, "Arial Black", sans-serif;
+      font-weight: 900;
+      letter-spacing: .8px;
+      font-size: clamp(18px, 2.4vw, 28px);
+      color: #fff;
+      text-shadow: 0 2px 0 rgba(0, 0, 0, .18);
+      white-space: nowrap
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px
+    }
+
+    .nav-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .35);
+      z-index: 1000
+    }
+
+    .nav-backdrop.show {
+      display: block
+    }
+
+    body.no-scroll {
+      overflow: hidden
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      opacity: .95;
+      padding: 12px 6px;
+      border-radius: 10px;
+      min-height: 44px;
+      display: flex;
+      align-items: center
+    }
+
+    nav a:hover,
+    nav a.active {
+      opacity: 1;
+      background: rgba(0, 0, 0, .08)
+    }
+
+    .phone {
+      margin-left: 8px;
+      background: #111;
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 900;
+      letter-spacing: .5px;
+      text-decoration: none;
+      box-shadow: inset 0 -2px 0 rgba(255, 255, 255, .06);
+      min-height: 44px;
+      display: flex;
+      align-items: center
+    }
+
+    /* 메뉴 타이틀: 이미지 아래 가운데 정렬 */
+    .menu-grid .card .body {
+      text-align: center;
+      font-weight: 800;
+      font-size: 16px;
+      /* 필요하면 숫자만 조절 */
+      padding: 14px 16px;
+      /* 간격 살짝 */
+    }
+
+    .menu-grid .card .body strong {
+      display: block;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 900;
+      line-height: 1;
+      min-width: 44px;
+      min-height: 44px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent
+    }
 
     /* ===== Sections ===== */
-    section{scroll-margin-top:calc(var(--header-h) + env(safe-area-inset-top) + 12px)}
-    .hero{background:linear-gradient(90deg,var(--brand-start),var(--brand-end));color:#fff}
-    .hero .wrap{max-width:var(--maxw);margin:0 auto;padding:56px 16px 68px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
-    .hero h1{font-family: Impact, Bebas Neue, Oswald, "Arial Black", sans-serif;font-size: clamp(38px, 9vw, 92px);line-height:0.94;margin:0 0 12px}
-    .hero p{margin:0 0 22px;opacity:.95;font-size:clamp(15px,1.8vw,18px)}
-    .cta{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{background:#111;color:#fff;border:none;padding:14px 18px;border-radius:12px;font-weight:800;cursor:pointer;touch-action:manipulation;min-height:44px}
-    .btn.alt{background:#fff;color:#111}
+    section {
+      scroll-margin-top: calc(var(--header-h) + env(safe-area-inset-top) + 12px)
+    }
+
+    .hero {
+      background: linear-gradient(90deg, var(--brand-start), var(--brand-end));
+      color: #fff
+    }
+
+    .hero .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 56px 16px 68px;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 24px;
+      align-items: center
+    }
+
+    .hero h1 {
+      font-family: Impact, Bebas Neue, Oswald, "Arial Black", sans-serif;
+      font-size: clamp(38px, 9vw, 92px);
+      line-height: 0.94;
+      margin: 0 0 12px
+    }
+
+    .hero p {
+      margin: 0 0 22px;
+      opacity: .95;
+      font-size: clamp(15px, 1.8vw, 18px)
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      background: #111;
+      color: #fff;
+      border: none;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      touch-action: manipulation;
+      min-height: 44px
+    }
+
+    .btn.alt {
+      background: #fff;
+      color: #111
+    }
 
     /* 공용 카드/그리드 */
-    .card-grid{max-width:var(--maxw);margin:0 auto;padding:48px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-    .card .body{padding:16px}
-    .card .thumb{background:#000}
+    .card-grid {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 48px 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden
+    }
+
+    .card .body {
+      padding: 16px
+    }
+
+    .card .thumb {
+      background: #000
+    }
 
     /* 메뉴 이미지: 좌우 꽉, 16:9, 모든 브라우저 대응 */
-    .menu-grid .card .thumb{position:relative;overflow:hidden}
-    .menu-grid .card .thumb::before{content:"";display:block;padding-top:56.25%} /* 16:9 fallback */
-    .menu-grid .card .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
-    @supports (aspect-ratio: 16/9){
-      .menu-grid .card .thumb{aspect-ratio:16/9}
-      .menu-grid .card .thumb::before{display:none}
+    .menu-grid .card .thumb {
+      position: relative;
+      overflow: hidden
+    }
+
+    .menu-grid .card .thumb::before {
+      content: "";
+      display: block;
+      padding-top: 56.25%
+    }
+
+    .menu-grid .card .thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center
+    }
+
+    @supports (aspect-ratio: 16/9) {
+      .menu-grid .card .thumb {
+        aspect-ratio: 16/9
+      }
+
+      .menu-grid .card .thumb::before {
+        display: none
+      }
     }
 
     /* 히어로 GIF(영상 자리): 16:9, 모든 브라우저 대응 */
-    .video-wrap{position:relative;width:100%;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);background:#000}
-    .video-wrap::before{content:"";display:block;padding-top:56.25%} /* 16:9 fallback */
-    .video-wrap > *{position:absolute;inset:0;width:100%;height:100%}
-    @supports (aspect-ratio: 16/9){
-      .video-wrap{aspect-ratio:16/9}
-      .video-wrap::before{display:none}
+    .video-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #000
     }
 
-    .band{padding:18px 16px;font-size:14px;color:#fff}
-    .band.yellow{background:var(--yellow);color:#111}
-    .band.green{background:var(--green)}
-    .band.teal{background:var(--teal)}
+    .video-wrap::before {
+      content: "";
+      display: block;
+      padding-top: 56.25%
+    }
 
-    footer{background:#0f0f10;color:#bdbdbd}
-    .foot-wrap{max-width:var(--maxw);margin:0 auto;padding:24px 16px;display:flex;gap:12px;justify-content:space-between;align-items:center}
+    .video-wrap>* {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%
+    }
+
+    @supports (aspect-ratio: 16/9) {
+      .video-wrap {
+        aspect-ratio: 16/9
+      }
+
+      .video-wrap::before {
+        display: none
+      }
+    }
+
+    .band {
+      padding: 18px 16px;
+      font-size: 14px;
+      color: #fff
+    }
+
+    .band.yellow {
+      background: var(--yellow);
+      color: #111
+    }
+
+    .band.green {
+      background: var(--green)
+    }
+
+    .band.teal {
+      background: var(--teal)
+    }
+
+    footer {
+      background: #0f0f10;
+      color: #bdbdbd
+    }
+
+    .foot-wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 24px 16px;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center
+    }
 
     /* ===== Mobile ===== */
-    @media (max-width: 960px){
-      .menu-toggle{display:block}
-      .header-inner{gap:10px}
-      .nav-panel{position:fixed;left:12px;right:12px;top:calc(var(--header-h) + env(safe-area-inset-top) + 8px);background:#111;color:#fff;border-radius:14px;padding:12px;display:none;flex-direction:column;gap:8px;box-shadow:var(--shadow);z-index:1001}
-      .nav-panel.open{display:flex}
-      .nav-panel a{background:#1b1b1b}
-      .phone{justify-content:center}
-      .hero .wrap{grid-template-columns:1fr}
-      .card-grid{grid-template-columns:1fr 1fr}
+    @media (max-width: 960px) {
+      .menu-toggle {
+        display: block
+      }
+
+      .header-inner {
+        gap: 10px
+      }
+
+      .nav-panel {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        top: calc(var(--header-h) + env(safe-area-inset-top) + 8px);
+        background: #111;
+        color: #fff;
+        border-radius: 14px;
+        padding: 12px;
+        display: none;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: var(--shadow);
+        z-index: 1001
+      }
+
+      .nav-panel.open {
+        display: flex
+      }
+
+      .nav-panel a {
+        background: #1b1b1b
+      }
+
+      .phone {
+        justify-content: center
+      }
+
+      .hero .wrap {
+        grid-template-columns: 1fr
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr 1fr
+      }
     }
-    @media (max-width: 560px){
-      .card-grid{grid-template-columns:1fr}
-      .brand{font-size:18px}
-      .phone{padding:10px 14px}
-      .band{font-size:13px}
+
+    @media (max-width: 560px) {
+      .card-grid {
+        grid-template-columns: 1fr
+      }
+
+      .brand {
+        font-size: 18px
+      }
+
+      .phone {
+        padding: 10px 14px
+      }
+
+      .band {
+        font-size: 13px
+      }
     }
   </style>
 </head>
+
 <body>
   <!-- Header -->
   <header class="header bar">
     <div class="header-inner">
       <div class="brand">BROWN ROTISSERIE</div>
       <button class="menu-toggle" aria-label="메뉴 열기" aria-expanded="false">☰</button>
-      <nav class="nav-panel"> 
+      <nav class="nav-panel">
         <a href="#menu" data-spy>메뉴소개</a>
         <a href="#stores" data-spy>매장안내</a>
         <a href="#franchise" data-spy>창업문의</a>
@@ -122,7 +439,7 @@
   <section id="home" class="hero">
     <div class="wrap">
       <div>
-        <h1>BROWN<br/>ROTISSERIE</h1>
+        <h1>BROWN<br />ROTISSERIE</h1>
         <p>겉은 바삭, 속은 촉촉. 브랜드 컬러(오렌지 → 레드)와 간판 타이포 느낌을 살린 원페이지 사이트 템플릿입니다.</p>
         <div class="cta">
           <a class="btn alt" href="#menu">메뉴 보러가기</a>
@@ -131,49 +448,58 @@
       </div>
       <!-- 드라이브 GIF -->
       <div class="video-wrap">
-        <img
-          src="https://drive.google.com/uc?export=view&id=1_q-nrfC7sWU9MIsGf5BHoEmKhY1Olr3b"
-          alt="통닭 GIF"
-          loading="eager"
-          decoding="async"
-          referrerpolicy="no-referrer"
+        <img src="https://drive.google.com/uc?export=view&id=1_q-nrfC7sWU9MIsGf5BHoEmKhY1Olr3b" alt="통닭 GIF"
+          loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer"
           style="object-fit:cover;object-position:center"
-          onerror="this.onerror=null;this.src='https://drive.google.com/thumbnail?id=1_q-nrfC7sWU9MIsGf5BHoEmKhY1Olr3b&sz=w1200';"
-        />
+          onerror="this.onerror=null;this.src='https://drive.google.com/thumbnail?id=1_q-nrfC7sWU9MIsGf5BHoEmKhY1Olr3b&sz=w1200';" />
       </div>
     </div>
   </section>
 
   <!-- MENU -->
   <section id="menu">
-    <div class="band yellow">ELECTRIC FRY</div>
+    <div class="band yellow">메뉴소개</div>
     <div id="menu-grid" class="card-grid menu-grid" aria-live="polite"></div>
   </section>
 
   <!-- STORES -->
   <section id="stores">
-    <div class="band green">Salad</div>
+    <div class="band green">매장안내</div>
     <div class="card-grid">
-      <article class="card"><div class="thumb">지도/매장 썸네일</div><div class="body"><strong>인천 도화점</strong><br/>인천광역시 미추홀구 ...</div></article>
-      <article class="card"><div class="thumb">지도/매장 썸네일</div><div class="body"><strong>가맹 준비중</strong><br/>문의: 1800-5829</div></article>
-      <article class="card"><div class="thumb">지도/매장 썸네일</div><div class="body"><strong>가맹 준비중</strong><br/>문의: 1800-5829</div></article>
+      <article class="card">
+        <div class="thumb">지도/매장 썸네일</div>
+        <div class="body"><strong>인천 도화점</strong><br />인천광역시 미추홀구 ...</div>
+      </article>
+      <article class="card">
+        <div class="thumb">지도/매장 썸네일</div>
+        <div class="body"><strong>가맹 준비중</strong><br />문의: 1800-5829</div>
+      </article>
+      <article class="card">
+        <div class="thumb">지도/매장 썸네일</div>
+        <div class="body"><strong>가맹 준비중</strong><br />문의: 1800-5829</div>
+      </article>
     </div>
   </section>
 
   <!-- FRANCHISE -->
   <section id="franchise">
-    <div class="band teal">TTEOK GALBI</div>
+    <div class="band teal">창업문의</div>
     <div class="card-grid">
       <article class="card" style="grid-column:1/-1">
         <div class="body">
           <h3 style="margin:0 0 10px">창업문의</h3>
           <p style="margin:0 0 16px">브라운 로티세리 가맹 안내서를 요청하시거나 상담 예약을 남겨주세요. 아래 예시 폼은 실제로 동작하지 않는 목업입니다.</p>
-          <form onsubmit="event.preventDefault(); alert('제출 예시입니다. 실제 연결은 백엔드 연동 후 작동합니다.');" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+          <form onsubmit="event.preventDefault(); alert('제출 예시입니다. 실제 연결은 백엔드 연동 후 작동합니다.');"
+            style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
             <input placeholder="이름" required style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
             <input placeholder="연락처" required style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
             <input placeholder="지역" style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
-            <select style="padding:14px;border-radius:10px;border:1px solid #e3e3e3"><option>오프라인 매장</option><option>배달전문</option></select>
-            <textarea placeholder="문의 내용" rows="4" style="grid-column:1/-1;padding:14px;border:1px solid #e3e3e3;border-radius:10px"></textarea>
+            <select style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
+              <option>오프라인 매장</option>
+              <option>배달전문</option>
+            </select>
+            <textarea placeholder="문의 내용" rows="4"
+              style="grid-column:1/-1;padding:14px;border:1px solid #e3e3e3;border-radius:10px"></textarea>
             <button class="btn" style="grid-column:1/-1">상담 신청</button>
           </form>
         </div>
@@ -184,9 +510,18 @@
   <!-- COMMUNITY -->
   <section id="community">
     <div class="card-grid" style="padding-top:28px">
-      <article class="card"><div class="thumb">공지/이벤트</div><div class="body">브랜드 소식, 이벤트, 프로모션 배너</div></article>
-      <article class="card"><div class="thumb">인스타그램</div><div class="body">#브라운로티세리 해시태그 피드 연동</div></article>
-      <article class="card"><div class="thumb">리뷰</div><div class="body">매장 후기/블로그 스니펫</div></article>
+      <article class="card">
+        <div class="thumb">공지/이벤트</div>
+        <div class="body">브랜드 소식, 이벤트, 프로모션 배너</div>
+      </article>
+      <article class="card">
+        <div class="thumb">인스타그램</div>
+        <div class="body">#브라운로티세리 해시태그 피드 연동</div>
+      </article>
+      <article class="card">
+        <div class="thumb">리뷰</div>
+        <div class="body">매장 후기/블로그 스니펫</div>
+      </article>
     </div>
   </section>
 
@@ -201,55 +536,80 @@
     // Year
     document.getElementById('yy').textContent = new Date().getFullYear();
 
-    // Mobile nav toggle (구형 브라우저 호환: optional chaining 사용 안함)
+    // Mobile nav toggle
     var toggleBtn = document.querySelector('.menu-toggle');
     var navEl = document.querySelector('.nav-panel');
     var backdrop = document.querySelector('.nav-backdrop');
-    function openNav(){ if(navEl&&backdrop&&toggleBtn){ navEl.classList.add('open'); backdrop.classList.add('show'); document.body.classList.add('no-scroll'); toggleBtn.setAttribute('aria-expanded','true'); } }
-    function closeNav(){ if(navEl&&backdrop&&toggleBtn){ navEl.classList.remove('open'); backdrop.classList.remove('show'); document.body.classList.remove('no-scroll'); toggleBtn.setAttribute('aria-expanded','false'); } }
-    if (toggleBtn) toggleBtn.addEventListener('click', function(){ (navEl && navEl.classList.contains('open')) ? closeNav() : openNav(); });
+    function openNav() { if (navEl && backdrop && toggleBtn) { navEl.classList.add('open'); backdrop.classList.add('show'); document.body.classList.add('no-scroll'); toggleBtn.setAttribute('aria-expanded', 'true'); } }
+    function closeNav() { if (navEl && backdrop && toggleBtn) { navEl.classList.remove('open'); backdrop.classList.remove('show'); document.body.classList.remove('no-scroll'); toggleBtn.setAttribute('aria-expanded', 'false'); } }
+    if (toggleBtn) toggleBtn.addEventListener('click', function () { (navEl && navEl.classList.contains('open')) ? closeNav() : openNav(); });
     if (backdrop) backdrop.addEventListener('click', closeNav);
-    if (navEl) navEl.addEventListener('click', function(e){ if(e.target && e.target.tagName === 'A') closeNav(); });
 
-    // Scroll spy (지원 안 하면 그냥 패스)
+    /* 모바일 내비: 헤더 보정 + 스무스 스크롤 + 폴백 */
+    (function () {
+      var header = document.querySelector('.header');
+      function headerOffset() { return (header ? header.offsetHeight : 64) + 8; }
+      function smoothTo(target, hash) {
+        var y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset();
+        var supportsSmooth = 'scrollBehavior' in document.documentElement.style;
+        if (supportsSmooth) window.scrollTo({ top: y, behavior: 'smooth' });
+        else window.scrollTo(0, y);
+        setTimeout(function () { if (Math.abs(window.pageYOffset - y) > 2) location.hash = hash; }, 350);
+      }
+      function onNavItem(e) {
+        var href = this.getAttribute('href') || '';
+        if (href.charAt(0) !== '#') return;
+        var target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        closeNav();
+        setTimeout(function () { smoothTo(target, href); }, 0);
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('nav a[href]'), function (a) {
+        a.addEventListener('click', onNavItem, { passive: false });
+        a.addEventListener('touchend', onNavItem, { passive: false });
+      });
+    })();
+
+    // Scroll spy
     var links = [].slice.call(document.querySelectorAll('nav a[data-spy]'));
-    var map = new Map(links.map(function(a){ return [a.getAttribute('href'), a]; }));
-    if ('IntersectionObserver' in window){
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
+    var map = new Map(links.map(function (a) { return [a.getAttribute('href'), a]; }));
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
           var id = '#' + e.target.id;
           var a = map.get(id);
-          if(!a) return;
-          if(e.isIntersecting){
-            links.forEach(function(x){ x.classList.remove('active'); });
+          if (!a) return;
+          if (e.isIntersecting) {
+            links.forEach(function (x) { x.classList.remove('active'); });
             a.classList.add('active');
           }
         });
-      }, {rootMargin: '-50% 0px -50% 0px', threshold: 0});
-      ['menu','stores','franchise','community'].forEach(function(id){
-        var el = document.getElementById(id); if(el) io.observe(el);
+      }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+      ['menu', 'stores', 'franchise', 'community'].forEach(function (id) {
+        var el = document.getElementById(id); if (el) io.observe(el);
       });
     }
 
-    /* ===== 메뉴 (Drive 링크/ID 자동 처리) ===== */
+    /* ===== 메뉴 (Drive 썸네일 CDN 우선 + srcset) ===== */
     window.MENU_ITEMS = [
       { name: '1+1전기구이 통닭', src: '1iVno5tohRjyD48_TdPK2MR9dbayiUs2N' },
       { name: '1+1전기구이 통닭', src: '1iVno5tohRjyD48_TdPK2MR9dbayiUs2N' },
-      { name: '전기구이통닭',       src: '1NheeD1NTGr_DkSbP2T6wfrJeguu-k8XP' },
-      { name: '전기구이 찹쌀통닭',  src: '1UK46DYYzkWsIygQ_E8KM-9lUYBVIvcUD' },
-      { name: '매콤양념 통닭',     src: '1FwbouzIwNcqMnp3nFQHydYEnYwPbkBSH' },
-      { name: '나시고랭 통닭',     src: '1dN-Cg19aCZzGK36-hzMPdVoEP5q4J5py' },
-      { name: '모듬튀김 통닭',     src: '1ZwAAu2TN8EUrAQsJOR49ooPaWvtCeUtB' },
-      { name: '파김치 통닭',       src: '1B7ee17eU6cxahnu73r3tRnKJ2bf-35nn' },
-      { name: '치즈 통닭',         src: '1jFUwpTIx-uBq0DJXiFxhJu4CsrT4HGMk' },
-      { name: '파스타 통닭',       src: '18_Y9ff13x10YG-gx37Xf5jXRFJQHnB7_' },
-      { name: '쭈꾸미 통닭',       src: '1aCYPB0ti_H1crKxmlp7re8h_noU5MfeH' },
-      { name: '닭껍질 튀김',       src: '1Li4Kl99ie6G2b2bDu0H4SaLowQCX0eB8' },
-      { name: '닭똥집 튀김',       src: '1joMWOWGNuBJLC1H-VAzUArFuI3kbs6Dz' },
+      { name: '전기구이통닭', src: '1NheeD1NTGr_DkSbP2T6wfrJeguu-k8XP' },
+      { name: '전기구이 찹쌀통닭', src: '1UK46DYYzkWsIygQ_E8KM-9lUYBVIvcUD' },
+      { name: '매콤양념 통닭', src: '1FwbouzIwNcqMnp3nFQHydYEnYwPbkBSH' },
+      { name: '나시고랭 통닭', src: '1dN-Cg19aCZzGK36-hzMPdVoEP5q4J5py' },
+      { name: '모듬튀김 통닭', src: '1ZwAAu2TN8EUrAQsJOR49ooPaWvtCeUtB' },
+      { name: '파김치 통닭', src: '1B7ee17eU6cxahnu73r3tRnKJ2bf-35nn' },
+      { name: '치즈 통닭', src: '1jFUwpTIx-uBq0DJXiFxhJu4CsrT4HGMk' },
+      { name: '파스타 통닭', src: '18_Y9ff13x10YG-gx37Xf5jXRFJQHnB7_' },
+      { name: '쭈꾸미 통닭', src: '1aCYPB0ti_H1crKxmlp7re8h_noU5MfeH' },
+      { name: '닭껍질 튀김', src: '1Li4Kl99ie6G2b2bDu0H4SaLowQCX0eB8' },
+      { name: '닭똥집 튀김', src: '1joMWOWGNuBJLC1H-VAzUArFuI3kbs6Dz' },
       { name: '(고기많은)버섯야채 닭죽', src: '1G_ZzRpZaY45X2DnCyuzqaLUMwZrk5dEu' },
     ];
 
-    function extractDriveId(urlOrId){
+    function extractDriveId(urlOrId) {
       if (!urlOrId) return "";
       var s = String(urlOrId).trim();
       if (/^[a-zA-Z0-9_-]{20,}$/.test(s)) return s;
@@ -257,45 +617,63 @@
       m = s.match(/[?&]id=([a-zA-Z0-9_-]+)/); if (m && m[1]) return m[1];
       return "";
     }
-    function drivePrimarySrc(id){ return "https://drive.google.com/uc?export=view&id=" + id; }
-    function driveFallbackSrc(id){ return "https://drive.google.com/thumbnail?id=" + id + "&sz=w1200"; }
+    // 썸네일 CDN(빠름) 우선 사용
+    function driveThumb(id, w) { return "https://drive.google.com/thumbnail?id=" + id + "&sz=w" + w; }
+    function drivePrimarySrc(id) { return driveThumb(id, 800); }
+    function driveSrcSet(id) {
+      return [
+        driveThumb(id, 480) + " 480w",
+        driveThumb(id, 800) + " 800w",
+        driveThumb(id, 1200) + " 1200w"
+      ].join(", ");
+    }
+    function driveFallbackSrc(id) { return "https://drive.google.com/uc?export=view&id=" + id; } // 원본 폴백
 
-    function createPlaceholder(label){
-      var w=1200,h=900;
-      var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='"+w+"' height='"+h+"'>"
+    function createPlaceholder(label) {
+      var w = 1200, h = 900;
+      var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='" + w + "' height='" + h + "'>"
         + "<rect width='100%' height='100%' fill='#f0f0f0'/>"
-        + "<rect x='20' y='20' width='"+(w-40)+"' height='"+(h-40)+"' fill='none' stroke='#d0d0d0' stroke-width='4'/>"
+        + "<rect x='20' y='20' width='" + (w - 40) + "' height='" + (h - 40) + "' fill='none' stroke='#d0d0d0' stroke-width='4'/>"
         + "<text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Pretendard, Noto Sans KR, sans-serif' font-size='48' fill='#888'>"
-        + (label||'이미지') + "</text></svg>";
+        + (label || '이미지') + "</text></svg>";
       return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
     }
 
-    function renderMenu(items){
+    function renderMenu(items) {
       var grid = document.getElementById('menu-grid');
-      if(!grid || !items) return;
-      grid.innerHTML = items.map(function(item, i){
+      if (!grid || !items) return;
+      grid.innerHTML = items.map(function (item, i) {
         var name = item.name || '';
         var id = extractDriveId(item.src);
-        var primary = id ? drivePrimarySrc(id) : (item.src || "");
-        var fallback = id ? driveFallbackSrc(id) : "";
+        if (!id) return '';
+        var isPriority = i < 2; // 첫 2장은 빠르게
         return (
           '<article class="card">'
           + '  <div class="thumb">'
-          + '    <img src="'+primary+'" data-fallback="'+fallback+'" alt="'+name+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" />'
+          + '    <img'
+          + '      src="' + drivePrimarySrc(id) + '"'
+          + '      srcset="' + driveSrcSet(id) + '"'
+          + '      sizes="(max-width:560px) 100vw, (max-width:960px) 50vw, 33vw"'
+          + '      data-fallback="' + driveFallbackSrc(id) + '"'
+          + '      alt="' + name + '"'
+          + (isPriority ? ' loading="eager" fetchpriority="high"' : ' loading="lazy" fetchpriority="low"')
+          + '      decoding="async" referrerpolicy="no-referrer"'
+          + '    />'
           + '  </div>'
-          + '  <div class="body"><strong>'+(i+1)+'. '+name+'</strong></div>'
+          + '  <div class="body"><strong>'  + name + '</strong></div>'
           + '</article>'
         );
       }).join('');
-      // 실패시 → 썸네일 → 플레이스홀더
-      [].slice.call(grid.querySelectorAll('img')).forEach(function(img){
-        img.addEventListener('error', function(){
+
+      // 실패시 → 원본(uc) → 플레이스홀더
+      [].slice.call(grid.querySelectorAll('img')).forEach(function (img) {
+        img.addEventListener('error', function () {
           var triedFb = img.getAttribute('data-triedFallback') === '1';
           var fb = img.getAttribute('data-fallback');
-          if (fb && !triedFb){
-            img.setAttribute('data-triedFallback','1');
+          if (fb && !triedFb) {
+            img.setAttribute('data-triedFallback', '1');
             img.src = fb;
-          }else{
+          } else {
             img.src = createPlaceholder(img.alt || '이미지');
           }
         });
@@ -304,4 +682,5 @@
     renderMenu(window.MENU_ITEMS);
   </script>
 </body>
+
 </html>
