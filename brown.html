@@ -13,6 +13,10 @@
   <link rel="preconnect" href="https://drive.google.com">
   <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
 
+  <!-- 간판 느낌 폰트 -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --brand-start: #FF7A1A;
@@ -47,7 +51,7 @@
       font-family: Pretendard, "Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
       color: var(--ink);
       background: #fff;
-      -webkit-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%
     }
 
     img,
@@ -143,16 +147,16 @@
       align-items: center
     }
 
-    /* 메뉴 타이틀: 이미지 아래 가운데 정렬 */
+    /* 메뉴 타이틀 */
     .menu-grid .card .body {
       text-align: center;
       font-weight: 800;
       font-size: 16px;
-      padding: 14px 16px;
+      padding: 14px 16px
     }
 
     .menu-grid .card .body strong {
-      display: block;
+      display: block
     }
 
     .menu-toggle {
@@ -193,7 +197,7 @@
     .hero h1 {
       font-family: Impact, Bebas Neue, Oswald, "Arial Black", sans-serif;
       font-size: clamp(38px, 9vw, 92px);
-      line-height: 0.94;
+      line-height: .94;
       margin: 0 0 12px
     }
 
@@ -251,7 +255,7 @@
       background: #000
     }
 
-    /* 메뉴 이미지: 좌우 꽉, 16:9 */
+    /* 메뉴 이미지 */
     .menu-grid .card .thumb {
       position: relative;
       overflow: hidden
@@ -272,7 +276,7 @@
       object-position: center
     }
 
-    @supports (aspect-ratio: 16/9) {
+    @supports (aspect-ratio:16/9) {
       .menu-grid .card .thumb {
         aspect-ratio: 16/9
       }
@@ -282,7 +286,7 @@
       }
     }
 
-    /* 히어로 GIF(영상 자리) */
+    /* 히어로 GIF */
     .video-wrap {
       position: relative;
       width: 100%;
@@ -305,7 +309,7 @@
       height: 100%
     }
 
-    @supports (aspect-ratio: 16/9) {
+    @supports (aspect-ratio:16/9) {
       .video-wrap {
         aspect-ratio: 16/9
       }
@@ -350,7 +354,7 @@
     }
 
     /* ===== Mobile ===== */
-    @media (max-width: 960px) {
+    @media (max-width:960px) {
       .menu-toggle {
         display: block
       }
@@ -382,10 +386,9 @@
       .nav-panel a {
         background: #1b1b1b;
         width: 100%;
-        justify-content: center;
+        justify-content: center
       }
 
-      /* 클릭영역 확장 + 중앙정렬 */
       .phone {
         justify-content: center
       }
@@ -399,7 +402,7 @@
       }
     }
 
-    @media (max-width: 560px) {
+    @media (max-width:560px) {
       .card-grid {
         grid-template-columns: 1fr
       }
@@ -417,39 +420,39 @@
       }
     }
 
-    /* ===== 흰 외곽선 + 검은 글자 ===== */
+    /* ===== 간판 느낌: 검은 글자 + 얇은 흰 윤곽 + 살짝 흰 그림자 ===== */
+    :root {
+      --glow-small: .8px;
+      /* 상단 로고 그림자 세기 */
+      --glow-big: 2px;
+      /* 메인 타이틀 그림자 세기 */
+    }
+
     .brand,
     .hero h1 {
+      font-family: "Bebas Neue", Impact, "Arial Black", Oswald, system-ui, sans-serif;
       color: #000;
+      /* 글자색은 검정 */
+      text-transform: uppercase;
+      letter-spacing: .2px;
     }
 
-    /* 크기별 스트로크 두께 다르게 */
+    /* 상단 작은 로고 */
     .brand {
-      /* 상단 작은 로고 */
-      -webkit-text-stroke: 0.3px #fff;
+      text-shadow: 0 var(--glow-small) 0 rgba(255, 255, 255, .95);
+      /* 아래로 살짝 흰 그림자 */
+      font-weight: 900;
     }
 
+    /* 메인 큰 타이틀 */
     .hero h1 {
-      /* 메인 큰 타이틀 */
-      -webkit-text-stroke: 2px #fff;
-      letter-spacing: .5px;
-      /* 선택사항: 약간 더 탄탄하게 */
+      text-shadow: 0 var(--glow-big) 0 rgba(255, 255, 255, .95);
+      /* 조금 더 강하게 */
+      font-weight: 1000;
+      line-height: .94;
     }
 
-    /* Fallback: text-stroke 미지원 브라우저(일부 구형)용 */
-    @supports not (-webkit-text-stroke: 1px #fff) {
-      .brand {
-        text-shadow:
-          -1px 0 #fff, 1px 0 #fff, 0 -1px #fff, 0 1px #fff,
-          -1px -1px #fff, 1px 1px #fff, -1px 1px #fff, 1px -1px #fff;
-      }
 
-      .hero h1 {
-        text-shadow:
-          -2px 0 #fff, 2px 0 #fff, 0 -2px #fff, 0 2px #fff,
-          -2px -2px #fff, 2px 2px #fff, -2px 2px #fff, 2px -2px #fff;
-      }
-    }
   </style>
 </head>
 
@@ -474,8 +477,7 @@
   <section id="home" class="hero">
     <div class="wrap">
       <div>
-        <h1>BROWN<br />ROTISSERIE</h1>
-        <p></p>
+        <h1>BROWN<br>ROTISSERIE</h1>
         <p>바삭은 선명하게, 육즙은 꽉 차게</p>
         <p>전기구이 통닭의 정석. 간편한 운영과 표준화된 레시피</p>
         <div class="cta">
@@ -487,7 +489,7 @@
         <img src="https://drive.google.com/uc?export=view&id=1_q-nrfC7sWU9MIsGf5BHoEmKhY1Olr3b" alt="통닭 GIF"
           loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer"
           style="object-fit:cover;object-position:center"
-          onerror="this.onerror=null;this.src='https://drive.google.com/thumbnail?id=1_q-nrfC7sWU9MIsGf5BHoEmKhY1Olr3b&sz=w1200';" />
+          onerror="this.onerror=null;this.src='https://drive.google.com/thumbnail?id=1_q-nrfC7sWU9MIsGf5BHoEmKhY1Olr3b&sz=w1200';">
       </div>
     </div>
   </section>
@@ -504,15 +506,15 @@
     <div class="card-grid">
       <article class="card">
         <div class="thumb">지도/매장 썸네일</div>
-        <div class="body"><strong>인천 도화점</strong><br />인천광역시 미추홀구 ...</div>
+        <div class="body"><strong>인천 도화점</strong><br>인천광역시 미추홀구 ...</div>
       </article>
       <article class="card">
         <div class="thumb">지도/매장 썸네일</div>
-        <div class="body"><strong>가맹 준비중</strong><br />문의: 0000-0000</div>
+        <div class="body"><strong>가맹 준비중</strong><br>문의: 0000-0000</div>
       </article>
       <article class="card">
         <div class="thumb">지도/매장 썸네일</div>
-        <div class="body"><strong>가맹 준비중</strong><br />문의: 0000-0000</div>
+        <div class="body"><strong>가맹 준비중</strong><br>문의: 0000-0000</div>
       </article>
     </div>
   </section>
@@ -524,19 +526,27 @@
       <article class="card" style="grid-column:1/-1">
         <div class="body">
           <h3 style="margin:0 0 10px">창업문의</h3>
-          <p style="margin:0 0 16px">브라운 로티세리 가맹 안내서를 요청하시거나 상담 예약을 남겨주세요. 아래 예시 폼은 실제로 동작하지 않는 목업입니다.</p>
-          <form onsubmit="event.preventDefault(); alert('제출 예시입니다. 실제 연결은 백엔드 연동 후 작동합니다.');"
-            style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
-            <input placeholder="이름" required style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
-            <input placeholder="연락처" required style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
-            <input placeholder="지역" style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
-            <select style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
-              <option>오프라인 매장</option>
-              <option>배달전문</option>
+          <p style="margin:0 0 16px">가맹 안내서를 요청하시거나 상담 예약을 남겨주세요.</p>
+
+          <form id="franchise-form" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px" autocomplete="on">
+            <input name="name" placeholder="이름" required
+              style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
+            <input name="phone" placeholder="연락처 (예: 010-1234-5678)" required inputmode="tel" autocomplete="tel"
+              maxlength="15" style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
+            <input name="region" placeholder="지역" style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
+            <select name="mode" style="padding:14px;border-radius:10px;border:1px solid #e3e3e3">
+              <option value="오프라인 매장">오프라인 매장</option>
+              <option value="배달전문">배달전문</option>
             </select>
-            <textarea placeholder="문의 내용" rows="4"
+            <textarea name="msg" placeholder="문의 내용" rows="4"
               style="grid-column:1/-1;padding:14px;border:1px solid #e3e3e3;border-radius:10px"></textarea>
-            <button class="btn" style="grid-column:1/-1">상담 신청</button>
+
+            <!-- 스팸 방지 허니팟 -->
+            <input type="text" name="hp" tabindex="-1" autocomplete="off"
+              style="position:absolute;left:-9999px;opacity:0">
+
+            <button class="btn" type="submit" style="grid-column:1/-1">상담 신청</button>
+            <p id="form-status" style="grid-column:1/-1;margin:6px 0 0;color:#12763D"></p>
           </form>
         </div>
       </article>
@@ -581,36 +591,23 @@
     if (toggleBtn) toggleBtn.addEventListener('click', function () { (navEl && navEl.classList.contains('open')) ? closeNav() : openNav(); });
     if (backdrop) backdrop.addEventListener('click', closeNav);
 
-    /* 모바일 내비: 위임 방식 + 헤더 보정 스크롤 */
+    /* 모바일 내비: 위임 + 헤더 보정 스크롤 */
     (function () {
       var header = document.querySelector('.header');
       var navEl = document.querySelector('.nav-panel');
-
       function headerOffset() { return (header ? header.offsetHeight : 64) + 8; }
       function smoothTo(target, hash) {
         if (!target) return;
         var y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset();
-        try { window.scrollTo({ top: y, behavior: 'smooth' }); }
-        catch (e) { window.scrollTo(0, y); }
-        setTimeout(function () {
-          if (Math.abs(window.pageYOffset - y) > 2 && hash) location.hash = hash;
-        }, 350);
+        try { window.scrollTo({ top: y, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, y); }
+        setTimeout(function () { if (Math.abs(window.pageYOffset - y) > 2 && hash) location.hash = hash; }, 350);
       }
-
       function handler(e) {
-        var a = e.target.closest('a[href]');
-        if (!a || !navEl.contains(a)) return;
-        var href = a.getAttribute('href') || '';
-        if (href.charAt(0) !== '#') { closeNav(); return; } // tel: 등
-        e.preventDefault();
-        closeNav();
-        setTimeout(function () { smoothTo(document.querySelector(href), href); }, 0);
+        var a = e.target.closest('a[href]'); if (!a || !navEl.contains(a)) return;
+        var href = a.getAttribute('href') || ''; if (href.charAt(0) !== '#') { closeNav(); return; }
+        e.preventDefault(); closeNav(); setTimeout(function () { smoothTo(document.querySelector(href), href); }, 0);
       }
-
-      if (navEl) {
-        navEl.addEventListener('click', handler, false);
-        navEl.addEventListener('touchend', handler, false); // iOS 보강
-      }
+      if (navEl) { navEl.addEventListener('click', handler, false); navEl.addEventListener('touchend', handler, false); }
     })();
 
     // Scroll spy
@@ -619,21 +616,14 @@
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          var id = '#' + e.target.id;
-          var a = map.get(id);
-          if (!a) return;
-          if (e.isIntersecting) {
-            links.forEach(function (x) { x.classList.remove('active'); });
-            a.classList.add('active');
-          }
+          var id = '#' + e.target.id; var a = map.get(id); if (!a) return;
+          if (e.isIntersecting) { links.forEach(function (x) { x.classList.remove('active'); }); a.classList.add('active'); }
         });
       }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
-      ['menu', 'stores', 'franchise', 'community'].forEach(function (id) {
-        var el = document.getElementById(id); if (el) io.observe(el);
-      });
+      ['menu', 'stores', 'franchise', 'community'].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
     }
 
-    /* ===== 메뉴 (Drive 썸네일 CDN 우선 + srcset) ===== */
+    /* ===== 메뉴 렌더링 ===== */
     window.MENU_ITEMS = [
       { name: '1+1전기구이 통닭', src: '1iVno5tohRjyD48_TdPK2MR9dbayiUs2N' },
       { name: '1+1전기구이 통닭', src: '1iVno5tohRjyD48_TdPK2MR9dbayiUs2N' },
@@ -650,7 +640,6 @@
       { name: '닭똥집 튀김', src: '1joMWOWGNuBJLC1H-VAzUArFuI3kbs6Dz' },
       { name: '(고기많은)버섯야채 닭죽', src: '1G_ZzRpZaY45X2DnCyuzqaLUMwZrk5dEu' },
     ];
-
     function extractDriveId(urlOrId) {
       if (!urlOrId) return "";
       var s = String(urlOrId).trim();
@@ -661,15 +650,8 @@
     }
     function driveThumb(id, w) { return "https://drive.google.com/thumbnail?id=" + id + "&sz=w" + w; }
     function drivePrimarySrc(id) { return driveThumb(id, 800); }
-    function driveSrcSet(id) {
-      return [
-        driveThumb(id, 480) + " 480w",
-        driveThumb(id, 800) + " 800w",
-        driveThumb(id, 1200) + " 1200w"
-      ].join(", ");
-    }
+    function driveSrcSet(id) { return [driveThumb(id, 480) + " 480w", driveThumb(id, 800) + " 800w", driveThumb(id, 1200) + " 1200w"].join(", "); }
     function driveFallbackSrc(id) { return "https://drive.google.com/uc?export=view&id=" + id; }
-
     function createPlaceholder(label) {
       var w = 1200, h = 900;
       var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='" + w + "' height='" + h + "'>"
@@ -679,47 +661,133 @@
         + (label || '이미지') + "</text></svg>";
       return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
     }
-
     function renderMenu(items) {
-      var grid = document.getElementById('menu-grid');
-      if (!grid || !items) return;
+      var grid = document.getElementById('menu-grid'); if (!grid || !items) return;
       grid.innerHTML = items.map(function (item, i) {
-        var name = item.name || '';
-        var id = extractDriveId(item.src);
-        if (!id) return '';
+        var name = item.name || ''; var id = extractDriveId(item.src); if (!id) return '';
         var isPriority = i < 2;
         return (
           '<article class="card">'
           + '  <div class="thumb">'
-          + '    <img'
-          + '      src="' + drivePrimarySrc(id) + '"'
-          + '      srcset="' + driveSrcSet(id) + '"'
-          + '      sizes="(max-width:560px) 100vw, (max-width:960px) 50vw, 33vw"'
-          + '      data-fallback="' + driveFallbackSrc(id) + '"'
-          + '      alt="' + name + '"'
+          + '    <img src="' + drivePrimarySrc(id) + '" srcset="' + driveSrcSet(id) + '" sizes="(max-width:560px) 100vw, (max-width:960px) 50vw, 33vw"'
+          + '         data-fallback="' + driveFallbackSrc(id) + '" alt="' + name + '"'
           + (isPriority ? ' loading="eager" fetchpriority="high"' : ' loading="lazy" fetchpriority="low"')
-          + '      decoding="async" referrerpolicy="no-referrer"'
-          + '    />'
+          + '         decoding="async" referrerpolicy="no-referrer" />'
           + '  </div>'
           + '  <div class="body"><strong>' + name + '</strong></div>'
           + '</article>'
         );
       }).join('');
-
       [].slice.call(grid.querySelectorAll('img')).forEach(function (img) {
         img.addEventListener('error', function () {
           var triedFb = img.getAttribute('data-triedFallback') === '1';
           var fb = img.getAttribute('data-fallback');
-          if (fb && !triedFb) {
-            img.setAttribute('data-triedFallback', '1');
-            img.src = fb;
-          } else {
-            img.src = createPlaceholder(img.alt || '이미지');
-          }
+          if (fb && !triedFb) { img.setAttribute('data-triedFallback', '1'); img.src = fb; }
+          else { img.src = createPlaceholder(img.alt || '이미지'); }
         });
       });
     }
     renderMenu(window.MENU_ITEMS);
+
+    /* ====== 상담 신청: Apps Script로 제출 (네가 준 URL) ====== */
+    (function () {
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMyJkuAmIJnLGY8vp36Kohr-ZsSYDeIlPP1S_1uZ_-VHblPk4-lzgu6TvocUQLWhHN/exec';
+      const form = document.getElementById('franchise-form');
+      const status = document.getElementById('form-status');
+      if (!form) return;
+
+      let busy = false;
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (busy) return;
+        if (form.hp && form.hp.value.trim()) return; // 허니팟
+
+        busy = true;
+        const btn = form.querySelector('button[type="submit"]');
+        const orig = btn ? btn.textContent : '';
+        if (btn) { btn.disabled = true; btn.textContent = '전송 중…'; }
+        if (status) { status.style.color = '#555'; status.textContent = '전송 중입니다…'; }
+
+        const fd = new FormData(form);
+        fd.append('referer', location.href);
+        fd.append('ua', navigator.userAgent);
+
+        try {
+          const res = await fetch(SCRIPT_URL, { method: 'POST', body: fd });
+          let data = null, text = '';
+          try { data = await res.clone().json(); } catch (_) { text = await res.text(); }
+          const ok =
+            (data && (data.result === 'success' || data.result === 'ok' || data.status === 'success' || data.ok === true)) ||
+            (!data && /success|ok/i.test(text));
+
+          if (res.ok && ok) {
+            if (status) { status.style.color = '#12763D'; status.textContent = '접수되었습니다. 곧 연락드릴게요!'; }
+            form.reset();
+          } else {
+            throw new Error((data && (data.message || data.error)) || '서버 응답 오류');
+          }
+        } catch (err) {
+          try {
+            await fetch(SCRIPT_URL, { method: 'POST', body: fd, mode: 'no-cors' });
+            if (status) { status.style.color = '#12763D'; status.textContent = '접수되었습니다. 반영까지 잠시 걸릴 수 있어요.'; }
+            form.reset();
+          } catch (err2) {
+            if (status) { status.style.color = '#D72600'; status.textContent = '전송 실패: ' + String(err2.message || err2); }
+          }
+        } finally {
+          busy = false;
+          if (btn) { btn.disabled = false; btn.textContent = orig; }
+        }
+      });
+    })();
+
+    // === 전화번호 자동 하이픈 (KR) ===
+    (function () {
+      var form = document.getElementById('franchise-form'); if (!form) return;
+      var phone = form.querySelector('input[name="phone"]'); if (!phone) return;
+
+      function formatPhoneKR(v) {
+        var s = (v || '').replace(/\D/g, '').slice(0, 12);
+        if (!s) return '';
+
+        // 대표번호 15xx/16xx/18xx
+        if (/^1[568]\d{2}/.test(s)) { if (s.length <= 4) return s; return s.slice(0, 4) + '-' + s.slice(4, 8); }
+
+        // 서울(02)
+        if (s.indexOf('02') === 0) {
+          if (s.length <= 2) return s;
+          if (s.length <= 5) return s.slice(0, 2) + '-' + s.slice(2);
+          return s.slice(0, 2) + '-' + s.slice(2, s.length - 4) + '-' + s.slice(-4);
+        }
+
+        // 050x
+        if (/^050/.test(s)) {
+          if (s.length <= 4) return s;
+          if (s.length <= 8) return s.slice(0, 4) + '-' + s.slice(4);
+          return s.slice(0, 4) + '-' + s.slice(4, s.length - 4) + '-' + s.slice(-4);
+        }
+
+        // 0xx (010/011/031 등)
+        if (/^0\d{2}/.test(s)) {
+          if (s.length <= 3) return s;
+          if (s.length <= 7) return s.slice(0, 3) + '-' + s.slice(3);
+          return s.slice(0, 3) + '-' + s.slice(3, s.length - 4) + '-' + s.slice(-4);
+        }
+
+        // 기타
+        if (s.length <= 3) return s;
+        if (s.length <= 7) return s.slice(0, 3) + '-' + s.slice(3);
+        return s.slice(0, 3) + '-' + s.slice(3, s.length - 4) + '-' + s.slice(-4);
+      }
+
+      function applyFormat() {
+        var cur = phone.value; var f = formatPhoneKR(cur);
+        if (cur !== f) { phone.value = f; try { phone.setSelectionRange(f.length, f.length); } catch (e) { } }
+      }
+      phone.addEventListener('input', applyFormat);
+      phone.addEventListener('blur', applyFormat);
+      phone.addEventListener('paste', function () { requestAnimationFrame(applyFormat); });
+    })();
   </script>
 </body>
 
