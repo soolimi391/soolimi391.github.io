@@ -80,7 +80,7 @@
 
     .brand {
       font-family: Impact, Bebas Neue, Oswald, "Arial Black", sans-serif;
-      font-weight: 900;
+      font-weight: 1000;
       letter-spacing: .8px;
       font-size: clamp(18px, 2.4vw, 28px);
       color: #fff;
@@ -134,7 +134,7 @@
       color: #fff;
       border-radius: 999px;
       padding: 10px 18px;
-      font-weight: 900;
+      font-weight: 1000;
       letter-spacing: .5px;
       text-decoration: none;
       box-shadow: inset 0 -2px 0 rgba(255, 255, 255, .06);
@@ -148,9 +148,7 @@
       text-align: center;
       font-weight: 800;
       font-size: 16px;
-      /* 필요하면 숫자만 조절 */
       padding: 14px 16px;
-      /* 간격 살짝 */
     }
 
     .menu-grid .card .body strong {
@@ -253,7 +251,7 @@
       background: #000
     }
 
-    /* 메뉴 이미지: 좌우 꽉, 16:9, 모든 브라우저 대응 */
+    /* 메뉴 이미지: 좌우 꽉, 16:9 */
     .menu-grid .card .thumb {
       position: relative;
       overflow: hidden
@@ -284,7 +282,7 @@
       }
     }
 
-    /* 히어로 GIF(영상 자리): 16:9, 모든 브라우저 대응 */
+    /* 히어로 GIF(영상 자리) */
     .video-wrap {
       position: relative;
       width: 100%;
@@ -382,9 +380,12 @@
       }
 
       .nav-panel a {
-        background: #1b1b1b
+        background: #1b1b1b;
+        width: 100%;
+        justify-content: center;
       }
 
+      /* 클릭영역 확장 + 중앙정렬 */
       .phone {
         justify-content: center
       }
@@ -413,6 +414,40 @@
 
       .band {
         font-size: 13px
+      }
+    }
+
+    /* ===== 흰 외곽선 + 검은 글자 ===== */
+    .brand,
+    .hero h1 {
+      color: #000;
+    }
+
+    /* 크기별 스트로크 두께 다르게 */
+    .brand {
+      /* 상단 작은 로고 */
+      -webkit-text-stroke: 0.3px #fff;
+    }
+
+    .hero h1 {
+      /* 메인 큰 타이틀 */
+      -webkit-text-stroke: 2px #fff;
+      letter-spacing: .5px;
+      /* 선택사항: 약간 더 탄탄하게 */
+    }
+
+    /* Fallback: text-stroke 미지원 브라우저(일부 구형)용 */
+    @supports not (-webkit-text-stroke: 1px #fff) {
+      .brand {
+        text-shadow:
+          -1px 0 #fff, 1px 0 #fff, 0 -1px #fff, 0 1px #fff,
+          -1px -1px #fff, 1px 1px #fff, -1px 1px #fff, 1px -1px #fff;
+      }
+
+      .hero h1 {
+        text-shadow:
+          -2px 0 #fff, 2px 0 #fff, 0 -2px #fff, 0 2px #fff,
+          -2px -2px #fff, 2px 2px #fff, -2px 2px #fff, 2px -2px #fff;
       }
     }
   </style>
@@ -446,7 +481,6 @@
           <a class="btn" href="#franchise">창업 문의</a>
         </div>
       </div>
-      <!-- 드라이브 GIF -->
       <div class="video-wrap">
         <img src="https://drive.google.com/uc?export=view&id=1_q-nrfC7sWU9MIsGf5BHoEmKhY1Olr3b" alt="통닭 GIF"
           loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer"
@@ -545,30 +579,36 @@
     if (toggleBtn) toggleBtn.addEventListener('click', function () { (navEl && navEl.classList.contains('open')) ? closeNav() : openNav(); });
     if (backdrop) backdrop.addEventListener('click', closeNav);
 
-    /* 모바일 내비: 헤더 보정 + 스무스 스크롤 + 폴백 */
+    /* 모바일 내비: 위임 방식 + 헤더 보정 스크롤 */
     (function () {
       var header = document.querySelector('.header');
+      var navEl = document.querySelector('.nav-panel');
+
       function headerOffset() { return (header ? header.offsetHeight : 64) + 8; }
       function smoothTo(target, hash) {
-        var y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset();
-        var supportsSmooth = 'scrollBehavior' in document.documentElement.style;
-        if (supportsSmooth) window.scrollTo({ top: y, behavior: 'smooth' });
-        else window.scrollTo(0, y);
-        setTimeout(function () { if (Math.abs(window.pageYOffset - y) > 2) location.hash = hash; }, 350);
-      }
-      function onNavItem(e) {
-        var href = this.getAttribute('href') || '';
-        if (href.charAt(0) !== '#') return;
-        var target = document.querySelector(href);
         if (!target) return;
+        var y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset();
+        try { window.scrollTo({ top: y, behavior: 'smooth' }); }
+        catch (e) { window.scrollTo(0, y); }
+        setTimeout(function () {
+          if (Math.abs(window.pageYOffset - y) > 2 && hash) location.hash = hash;
+        }, 350);
+      }
+
+      function handler(e) {
+        var a = e.target.closest('a[href]');
+        if (!a || !navEl.contains(a)) return;
+        var href = a.getAttribute('href') || '';
+        if (href.charAt(0) !== '#') { closeNav(); return; } // tel: 등
         e.preventDefault();
         closeNav();
-        setTimeout(function () { smoothTo(target, href); }, 0);
+        setTimeout(function () { smoothTo(document.querySelector(href), href); }, 0);
       }
-      Array.prototype.forEach.call(document.querySelectorAll('nav a[href]'), function (a) {
-        a.addEventListener('click', onNavItem, { passive: false });
-        a.addEventListener('touchend', onNavItem, { passive: false });
-      });
+
+      if (navEl) {
+        navEl.addEventListener('click', handler, false);
+        navEl.addEventListener('touchend', handler, false); // iOS 보강
+      }
     })();
 
     // Scroll spy
@@ -617,7 +657,6 @@
       m = s.match(/[?&]id=([a-zA-Z0-9_-]+)/); if (m && m[1]) return m[1];
       return "";
     }
-    // 썸네일 CDN(빠름) 우선 사용
     function driveThumb(id, w) { return "https://drive.google.com/thumbnail?id=" + id + "&sz=w" + w; }
     function drivePrimarySrc(id) { return driveThumb(id, 800); }
     function driveSrcSet(id) {
@@ -627,7 +666,7 @@
         driveThumb(id, 1200) + " 1200w"
       ].join(", ");
     }
-    function driveFallbackSrc(id) { return "https://drive.google.com/uc?export=view&id=" + id; } // 원본 폴백
+    function driveFallbackSrc(id) { return "https://drive.google.com/uc?export=view&id=" + id; }
 
     function createPlaceholder(label) {
       var w = 1200, h = 900;
@@ -646,7 +685,7 @@
         var name = item.name || '';
         var id = extractDriveId(item.src);
         if (!id) return '';
-        var isPriority = i < 2; // 첫 2장은 빠르게
+        var isPriority = i < 2;
         return (
           '<article class="card">'
           + '  <div class="thumb">'
@@ -660,12 +699,11 @@
           + '      decoding="async" referrerpolicy="no-referrer"'
           + '    />'
           + '  </div>'
-          + '  <div class="body"><strong>'  + name + '</strong></div>'
+          + '  <div class="body"><strong>' + name + '</strong></div>'
           + '</article>'
         );
       }).join('');
 
-      // 실패시 → 원본(uc) → 플레이스홀더
       [].slice.call(grid.querySelectorAll('img')).forEach(function (img) {
         img.addEventListener('error', function () {
           var triedFb = img.getAttribute('data-triedFallback') === '1';
