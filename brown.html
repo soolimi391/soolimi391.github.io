@@ -61,7 +61,7 @@
     .header {
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 3000;
       background: linear-gradient(90deg, var(--brand-start), var(--brand-end));
       box-shadow: 0 4px 10px rgba(215, 38, 0, .18);
       padding-top: env(safe-area-inset-top)
@@ -99,7 +99,7 @@
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, .35);
-      z-index: 1000
+      z-index: 2000
     }
 
     .nav-backdrop.show {
@@ -372,7 +372,7 @@
         flex-direction: column;
         gap: 8px;
         box-shadow: var(--shadow);
-        z-index: 1001
+        z-index: 3100
       }
 
       .nav-panel.open {
