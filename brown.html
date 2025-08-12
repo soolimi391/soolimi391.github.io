@@ -451,8 +451,6 @@
       font-weight: 1000;
       line-height: .94;
     }
-
-
   </style>
 </head>
 
@@ -574,7 +572,7 @@
   <footer>
     <div class="foot-wrap">
       <div>© <span id="yy"></span> BROWN ROTISSERIE. All rights reserved.</div>
-      <a class="phone" href="tel:0000-0000">0000-0000</a>
+      <a class="phone" href="tel:00000000">0000-0000</a>
     </div>
   </footer>
 
@@ -688,6 +686,15 @@
       });
     }
     renderMenu(window.MENU_ITEMS);
+
+    (function () {
+      const DISPLAY = '0000-0000';                 // 화면에 보일 형태
+      const RAW = DISPLAY.replace(/\D/g, '');      // tel:에 들어갈 숫자만
+      document.querySelectorAll('a.phone').forEach(a => {
+        a.textContent = DISPLAY;
+        a.href = 'tel:' + RAW;
+      });
+    })();
 
     /* ====== 상담 신청: Apps Script로 제출 (네가 준 URL) ====== */
     (function () {
