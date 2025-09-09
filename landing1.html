@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>로또빼기연구소 - 번호 받기 패널 (독립)</title>
+<style>
+  :root{
+    --w: 660px;
+    --border:#2f2f2f;
+    --ink:#222; --muted:#666; --line:#cfd8e3;
+    --brand:#2a97f0; --brand2:#3bb4ff; /* 하늘색 테마 */
+    --red:#d61e1e;
+  }
+  html,body{ height:100%; margin:0; }
+  body{ background:transparent; font-family:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; color:var(--ink); }
+
+  .wrap{ width:min(var(--w), 96vw); margin:20px auto; background:#fff; border:2px solid var(--border); box-shadow:0 18px 60px rgba(0,0,0,.25); border-radius:8px; overflow:hidden; }
+  .head{ position:relative; min-height:110px; padding:24px; }
+  .brand-watermark{ position:absolute; left:18px; top:14px; font-size:44px; font-weight:900; color:#e6cfe0; opacity:.45; user-select:none; letter-spacing:.5px; }
+  .brand-main{ position:absolute; left:26px; top:46px; font-size:30px; font-weight:900; color:var(--brand); }
+  .brand-sub{ position:absolute; left:26px; top:80px; font-size:15px; color:var(--muted); }
+  .qr{ position:absolute; right:24px; top:18px; width:110px; height:110px; border:1px solid var(--line); border-radius:4px; overflow:hidden; display:block; }
+  .qr img{ width:110px; height:110px; display:block; }
+
+  .close{ position:absolute; right:16px; bottom:14px; appearance:none; border:none; background:#111; color:#fff; font-weight:700; border-radius:8px; height:36px; padding:0 12px; cursor:pointer; }
+
+  .info{ display:flex; justify-content:space-between; align-items:center; padding:0 24px 10px; font-size:14px; }
+  .info small{ display:block; }
+  .info .mid{ font-weight:800; }
+
+  .ticket{ display:flex; align-items:flex-end; gap:10px; padding:0 24px 8px; }
+  .ticket .label{ font-weight:800; font-size:18px; }
+  .nums{ display:flex; gap:8px; font-weight:900; font-size:46px; letter-spacing:0; color:var(--red); }
+  .nums .slot{ width:50px; display:grid; place-items:center; }
+  .nums .val{ min-width:50px; text-align:center; }
+  .nums .val.spinning{ color:var(--muted); opacity:.9; }
+
+  .form{ padding:0 24px 14px; }
+  .row{ display:flex; align-items:center; gap:8px; margin:10px 0; }
+  .row label{ width:56px; font-size:14px; }
+  .txt,.sel{ height:36px; border:1px solid #bdbdbd; border-radius:6px; padding:0 10px; font-size:14px; outline:none; }
+  .txt:focus,.sel:focus{ border-color:var(--brand); box-shadow:0 0 0 3px rgba(59,180,255,.18); }
+  .txt.name{ width:220px; }
+  .sel.tel{ width:86px; }
+  .txt.tel{ width:118px; }
+
+  .note{ color:var(--muted); font-size:12px; padding:0 24px 16px; }
+  .cta{ display:block; margin:0 24px 18px; height:78px; width:calc(100% - 48px); border:none; border-radius:10px; color:#fff; font-weight:900; font-size:22px; letter-spacing:.5px; cursor:pointer;
+        background:linear-gradient(180deg,var(--brand2),var(--brand)); box-shadow:0 10px 24px rgba(0,0,0,.18); }
+  .cta:hover{ filter:brightness(1.03); transform:translateY(-1px); }
+  .cta:active{ filter:brightness(.98); transform:none; }
+
+  .dotted{ margin:10px 0; height:14px; background:repeating-linear-gradient(90deg, transparent 0 12px, #aaa 12px 16px); mask:linear-gradient(#000 0 0) center/100% 2px no-repeat; }
+
+  .title{ text-align:center; font-size:18px; margin:10px 0 12px; }
+  .grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:12px; padding:0 24px 24px; }
+  .cell{ aspect-ratio:1/1; border:1px solid #d1d9e6; border-radius:10px; display:grid; place-items:center; background:#fbfdff; overflow:hidden; }
+  .dial{
+    width:62px; height:62px; border-radius:50%;
+    background:
+      conic-gradient(from 0turn, transparent 0 80%, transparent 100%),
+      conic-gradient(var(--red) 0 25%, #ffe2e2 0 100%);
+    mask: radial-gradient(circle at center, transparent 0 70%, black 71% 100%);
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .num{ font-weight:900; font-size:42px; color:var(--red); letter-spacing:.02em; display:none; }
+  .cell.revealed .dial{ display:none; }
+  .cell.revealed .num{ display:block; }
+
+  .copy{ padding:0 24px 20px; font-size:12px; color:#777; }
+
+  /* 메시지 박스 (ref 안내) */
+  #refMessageBox{ display:none; margin:0 24px 12px; background:#e0f2fe; color:#0369a1; border-left:6px solid #0284c7; padding:10px 12px; border-radius:10px; font-size:.95rem; }
+
+  /* ===== 메시지 모달 ===== */
+  .modal{ position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.55); z-index:99999; }
+  .modal.show{ display:grid; }
+  .modal .box{ min-width:280px; max-width:86vw; background:#fff; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,.35); padding:22px 20px; text-align:center; }
+  .modal .box p{ margin:6px 0 16px; font-size:15px; }
+  .modal .box button{ height:40px; padding:0 16px; border-radius:10px; border:1px solid #d1d9e6; background:#fff; cursor:pointer; font-weight:700; }
+
+  /* 윗줄 숫자 슬롯 — 보기 좋게 간격/서체/색 고정 */
+.nums{ gap:14px; } /* 각 슬롯 간격을 조금 더 띄움 */
+.nums .val{
+  font-variant-numeric: tabular-nums;          /* 숫자 폭 고정 */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: .04em;                        /* 두 자리 사이도 살짝 띄움 */
+}
+/* 회전 중에도 빨강 유지 */
+.nums .val.spinning{ color: var(--red) !important; opacity: 1; }
+
+
+/* 아래 로딩 스피너를 더 진한 빨강 + 굵은 링으로 */
+.dial{
+  width:66px; height:66px; border-radius:50%;
+  /* 비어있는 35% + 붉은 진행 60%로 링을 굵게 */
+  background:
+    conic-gradient(from 0turn, transparent 0 40%, transparent 100%),
+    conic-gradient(#ff1f1f 0 60%, #ffe0e0 0 100%);
+  mask: radial-gradient(circle at center, transparent 0 64%, black 65% 100%);
+  box-shadow:
+    0 0 0 2px #ffd2d2 inset,            /* 속 링 */
+    0 0 20px rgba(255, 0, 0, .25);      /* 붉은 글로우 */
+  animation: spin .8s linear infinite;  /* 조금 더 빠르게 */
+}
+
+
+
+
+</style>
+</head>
+<body>
+  <div class="wrap" role="dialog" aria-modal="true" aria-label="번호 받기">
+    <div class="head">
+      <div class="brand-watermark">Lotto 6/45</div>
+      <div class="brand-sub">Lotto 6/45</div>
+      <a class="qr" href="https://soolimi391.github.io/landing" target="_blank" rel="noopener" aria-label="뉴스프론티어 QR 링크(새 창)">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=0&data=https%3A%2F%2Fsoolimi391.github.io%2Flanding" alt="QR: https://soolimi391.github.io/landing"/>
+      </a>
+      <button class="close" id="closeBtn" type="button" aria-label="닫기">닫기</button>
+    </div>
+
+    <div class="info">
+      <div>
+        <small>발 행 일 : <span>2025-09-09 (화)</span></small>
+        <small>추 첨 일 : <span>2025/09/13 (토)</span></small>
+      </div>
+      <div class="mid">제 <strong>1189</strong>회</div>
+    </div>
+
+    <div class="ticket">
+      <div class="label">A 수동</div>
+      <div class="nums" id="headNums">
+        <span class="slot"><span class="val">--</span></span>
+        <span class="slot"><span class="val">--</span></span>
+        <span class="slot"><span class="val">--</span></span>
+        <span class="slot"><span class="val">--</span></span>
+        <span class="slot"><span class="val">--</span></span>
+        <span class="slot"><span class="val">--</span></span>
+      </div>
+    </div>
+
+    <form class="form" onsubmit="return false;">
+      <input type="hidden" id="refInput" value="NEWS" />
+      <div id="refMessageBox"></div>
+
+      <div class="row">
+        <label for="name">이름</label>
+        <input id="name" class="txt name" type="text" autocomplete="name" />
+      </div>
+      <div class="row">
+        <label for="tel1">연락처</label>
+        <select id="tel1" class="sel tel">
+          <option value="010" selected>010</option>
+          <option value="011">011</option>
+          <option value="016">016</option>
+          <option value="017">017</option>
+          <option value="018">018</option>
+          <option value="019">019</option>
+        </select>
+        <input id="tel2" class="txt tel" type="text" inputmode="numeric" maxlength="4" placeholder="1234" />
+        <input id="tel3" class="txt tel" type="text" inputmode="numeric" maxlength="4" placeholder="5678" />
+      </div>
+    </form>
+
+    <p class="note">*이벤트 특성상 조기 마감 될 수 있습니다.</p>
+    <button class="cta" id="cta" type="button">1등 당첨번호 받아보기 Click</button>
+
+    <div class="dotted" aria-hidden="true"></div>
+    <h3 class="title">이번주 1등 당첨 예상번호는</h3>
+
+    <section class="grid" id="grid" aria-live="polite" aria-busy="true">
+      <div class="cell"><div class="dial"></div><div class="num">00</div></div>
+      <div class="cell"><div class="dial"></div><div class="num">00</div></div>
+      <div class="cell"><div class="dial"></div><div class="num">00</div></div>
+      <div class="cell"><div class="dial"></div><div class="num">00</div></div>
+      <div class="cell"><div class="dial"></div><div class="num">00</div></div>
+      <div class="cell"><div class="dial"></div><div class="num">00</div></div>
+    </section>
+
+    <p class="copy">[저작권자 © 뉴스프론티어, 무단전재 및 재배포 금지]</p>
+  </div>
+
+  <!-- 모달 -->
+  <div id="msgModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="box">
+      <p id="msgText">메시지</p>
+      <button id="msgOk" type="button">확인</button>
+    </div>
+  </div>
+
+<script>
+  // ===== 랜덤 6개(1..45, 중복 없이, 오름차순, 두 자리)
+  function pick(){
+    const a = Array.from({length:45},(_,i)=>i+1);
+    for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+    return a.slice(0,6).sort((x,y)=>x-y).map(n=>String(n).padStart(2,'0'))
+  }
+
+  const grid = document.getElementById('grid');
+  const cta = document.getElementById('cta');
+  const closeBtn = document.getElementById('closeBtn');
+  let busy = false;
+
+  // ===== 상단 6칸: 항상 회전
+  let spinTimers = [];
+  function startHeadSpin(){
+    spinTimers.forEach(t => clearInterval(t)); spinTimers = [];
+    document.querySelectorAll('#headNums .val').forEach((el, idx) => {
+      el.classList.add('spinning');
+      spinTimers[idx] = setInterval(() => {
+        const r = Math.floor(Math.random()*45)+1;
+        el.textContent = String(r).padStart(2,'0');
+      }, 40 + idx*15);
+    });
+  }
+  startHeadSpin();
+
+  // ===== 모달 유틸
+  const modal = document.getElementById('msgModal');
+  const msgText = document.getElementById('msgText');
+  const msgOk = document.getElementById('msgOk');
+  function showModal(text){ msgText.textContent=text; modal.classList.add('show'); msgOk.focus(); }
+  msgOk.addEventListener('click', ()=> modal.classList.remove('show'));
+
+  // ===== 숫자 입력 필터
+  ['tel2','tel3'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('input', e=>{ e.target.value = e.target.value.replace(/\D/g,'').slice(0,4); });
+  });
+
+  // ===== landing.html과 동일한 Apps Script 엔드포인트
+  const COUNT_URL = "https://script.google.com/macros/s/AKfycbwWhLq61Cace24U-8HlAaU2kqvojxoiBaYyvUg_3X4fkXLHinzdYCyI2Jrgqpt7y05r/exec"; // 유입 집계
+  const FORM_URL  = "https://script.google.com/macros/s/AKfycbze-R_fpvRcagyzQRNXA7KcZSOQ3bC7Yerpc43zPBdTS2Zf_A4GCV_xKB_5Hv3T7Fcv/exec"; // 메시지/폼 저장
+
+  // ===== ref 고정: NEWS (유입 집계 + 안내 문구 로딩)
+  const fullRef = "NEWS";
+  (function initRef(){
+    // 유입 집계 (countedRef = 'NEWS')
+    fetch(COUNT_URL + "?ref=" + encodeURIComponent("NEWS")).catch(()=>{});
+    // 안내 문구 로딩
+    fetch(FORM_URL + "?ref=" + encodeURIComponent(fullRef))
+      .then(r=>r.text()).then(msg=>{
+        if(msg && msg.trim()){
+          const box = document.getElementById("refMessageBox");
+          box.innerHTML = msg; box.style.display="block";
+        }
+      }).catch(()=>{});
+  })();
+
+  // ===== 폼 검증
+  function getFormDataOrModal(){
+    const name = document.getElementById('name').value.trim();
+    const tel1 = document.getElementById('tel1').value;
+    const tel2 = document.getElementById('tel2').value.replace(/\D/g,'');
+    const tel3 = document.getElementById('tel3').value.replace(/\D/g,'');
+    if(!name){ showModal('이름을 입력하세요.'); document.getElementById('name').focus(); return null; }
+    if(tel2.length < 3 || tel3.length < 4){
+      showModal('연락처를 정확히 입력하세요.');
+      if(tel2.length < 3) document.getElementById('tel2').focus(); else document.getElementById('tel3').focus();
+      return null;
+    }
+    return { name, phone: `${tel1}-${tel2}-${tel3}` };
+  }
+
+  // ===== 구글 시트 전송 (landing.html과 동일하게 FormData로 전송)
+  async function sendToSheet(formPayload){
+    try{
+      const fd = new FormData();
+      fd.append("ref", fullRef);
+      fd.append("name", formPayload.name);
+      fd.append("phone", formPayload.phone);
+      // landing.html 형식 맞춤: 동의값도 같이 보냄
+      fd.append("privacyConsent", "동의함");
+      fd.append("marketingConsent", "동의함");
+      await fetch(FORM_URL, { method:"POST", body:fd, mode:"no-cors" });
+    }catch(e){ /* 실패해도 UI 흐름 유지 */ }
+  }
+
+  // ===== 버튼 클릭: 검증 → 전송 → 모달 알림 (숫자는 계속 회전)
+  cta.addEventListener('click', async () => {
+    const form = getFormDataOrModal();
+    if(!form) return;
+    if(busy) return; busy = true;
+
+    // 저장용 난수 (시트에 남기려면 추가 가능)
+    const nums = pick(); // ["03","11","22","27","33","41"]
+    await sendToSheet({ ...form, numbers: nums });
+
+    showModal('신청되었습니다.');
+    busy = false;
+  });
+
+  // 부모 창(오버레이) 닫기
+  function closePanel(){
+    try{ window.parent.postMessage({type:'lottoPanelClose'}, '*'); }catch(e){}
+    if(window.close) { setTimeout(()=>window.close(), 50); }
+  }
+  closeBtn.addEventListener('click', closePanel);
+</script>
+
+</body>
+</html>
