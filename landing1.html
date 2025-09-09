@@ -105,6 +105,41 @@
     0 0 20px rgba(255, 0, 0, .25);      /* 붉은 글로우 */
   animation: spin .8s linear infinite;  /* 조금 더 빠르게 */
 }
+/* === Mobile tweaks for landing1 === */
+@media (max-width: 480px){
+  .wrap{ width:96vw; margin:12px auto; border-radius:10px; }
+  .head{ min-height:88px; padding:16px 14px; }
+  .brand-watermark{ display:none; }
+  .brand-sub{ left:14px; top:18px; font-size:14px; }
+  .qr{ right:12px; top:12px; width:84px; height:84px; }
+  .qr img{ width:84px; height:84px; }
+  .close{ right:12px; bottom:12px; height:34px; padding:0 10px; }
+
+  .info{ padding:0 14px 8px; font-size:13px; }
+  .ticket{ padding:0 14px 6px; gap:8px; }
+  .ticket .label{ font-size:16px; }
+  .nums{ gap:10px; font-size:36px; }
+  .nums .slot{ width:42px; }
+  .nums .val{ min-width:42px; }
+
+  .form{ padding:0 14px 10px; }
+  .row{ flex-wrap:wrap; gap:6px 8px; }
+  .row label{ width:auto; min-width:46px; font-size:13px; }
+  .txt.name{ width:100%; }
+  .sel.tel{ width:78px; }
+  .txt.tel{ width:calc((100% - 78px - 8px - 46px) / 2); min-width:110px; }
+
+  .note{ padding:0 14px 12px; font-size:11.5px; }
+  .cta{ height:64px; margin:0 14px 14px; width:calc(100% - 28px); font-size:19px; }
+
+  .title{ font-size:16px; margin:8px 0 10px; }
+  .grid{ grid-template-columns:repeat(3,1fr); gap:10px; padding:0 14px 16px; }
+  .dial{ width:54px; height:54px; }
+  .num{ font-size:34px; }
+
+  .copy{ padding:0 14px 16px; font-size:11.5px; }
+  .modal .box{ max-width:90vw; padding:18px 16px; }
+}
 
 
 
@@ -299,7 +334,37 @@
     if(window.close) { setTimeout(()=>window.close(), 50); }
   }
   closeBtn.addEventListener('click', closePanel);
+
+  
 </script>
+
+<script>
+  // === 부모(news1.html)에게 현재 콘텐츠 높이 보내기 ===
+  function sendPanelHeight(){
+    // 여백 포함 안전치로 24~40px 정도 더해줌
+    const h = document.querySelector('.wrap')?.offsetHeight ? (document.querySelector('.wrap').offsetHeight + 40) : document.body.scrollHeight;
+    try{ window.parent.postMessage({type:'lottoPanelResize', height: h}, '*'); }catch(e){}
+  }
+  // news1에서 'lottoPing' 보내면 즉시 응답
+  window.addEventListener('message', (e)=>{
+    if(e?.data?.type === 'lottoPing'){ sendPanelHeight(); }
+  });
+  // 최초 로드/리사이즈/DOM변경 시 갱신
+  window.addEventListener('load', sendPanelHeight);
+  window.addEventListener('resize', ()=> requestAnimationFrame(sendPanelHeight));
+  new (window.ResizeObserver||class{observe(){}})(sendPanelHeight).observe(document.body);
+
+  // 모달 열릴 때도 높이 재전송 (당신 파일의 showModal을 후킹)
+  (function(){
+    const _show = window.showModal;
+    window.showModal = function(txt){
+      if(typeof _show === 'function'){ _show(txt); }
+      else{ document.getElementById('msgText').textContent = txt; document.getElementById('msgModal').classList.add('show'); }
+      setTimeout(sendPanelHeight, 50);
+    };
+  })();
+</script>
+
 
 </body>
 </html>

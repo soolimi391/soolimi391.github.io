@@ -103,6 +103,24 @@
 .c-item.hidden{ display:none; }
 .c-more-wrap{ display:flex; justify-content:center; padding:12px; border-top:1px dashed var(--line); background:#fafafa; }
 .c-more{ appearance:none; border:1px solid var(--line); background:#fff; border-radius:8px; height:38px; padding:0 14px; cursor:pointer; font-weight:700; }
+/* === Mobile tweaks for news1 === */
+@media (max-width: 480px){
+  .container{ padding:0 12px; }
+  .brandbar .inner{ height:56px; }
+  .logo{ font-size:20px; }
+  .nav{ gap:10px; font-size:13px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .headline{ font-size:22px; }
+  .deck{ font-size:15px; }
+  .story{ font-size:15px; line-height:1.8; }
+  .headline-underline{ width:64px; }
+  .aside{ padding:12px; }
+  .rank li{ padding:8px 0; }
+  .comments h3{ padding:12px; font-size:15px; }
+  .c-item{ padding:12px; }
+  .frame-wrap{ width:100%; }
+  /* iframe 높이는 자식(landing1)이 보내주는 값으로 JS에서 다시 설정됨 */
+  .frame{ min-height:760px; border-width:1px; border-radius:6px; }
+}
 
 </style>
 </head>
