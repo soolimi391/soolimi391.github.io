@@ -1,0 +1,70 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>네이버 아이디로 로그인</title>
+<style>
+  :root { --naver:#03c75a; --muted:#667085; }
+  *{box-sizing:border-box} html,body{margin:0;font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, 'Noto Sans KR', sans-serif;background:#f6f8fb}
+  .wrap{min-height:100vh;display:grid;place-items:center;padding:28px}
+  .card{width:min(720px,94vw);background:#fff;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.08);padding:26px 26px 30px}
+  h1{margin:0 0 10px} .muted{color:var(--muted);font-size:14px;margin:4px 0 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+  .btn{appearance:none;border:0;border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:12px;text-decoration:none}
+  .btn.naver{background:var(--naver);color:#fff}
+  .logo{width:22px;height:22px;border-radius:6px;background:#fff;color:var(--naver);display:grid;place-items:center;font-weight:900}
+  code{background:#f2f4f7;border-radius:6px;padding:2px 6px}
+  .hint{margin-top:12px;background:#f3fff7;border:1px solid #e0f4e9;border-radius:8px;padding:10px 12px}
+  footer{margin-top:10px;font-size:12px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <div class="card" role="main" aria-labelledby="title">
+    <h1 id="title">로그인</h1>
+    <p class="muted">“네이버 아이디로 로그인” 버튼을 눌러 인증을 진행하세요.</p>
+
+    <div class="row">
+      <button id="naverBtn" class="btn naver" aria-label="네이버 아이디로 로그인">
+        <span class="logo">N</span> 네이버 아이디로 로그인
+      </button>
+    </div>
+
+    <div class="hint">
+      <div>client_id: <code id="cid"></code></div>
+      <div>redirect_uri: <code id="ru"></code></div>
+      <div>state: <code id="st"></code></div>
+      <div class="muted">※ 개발자센터의 Callback URL과 <code>redirect_uri</code>가 100% 일치해야 합니다.</div>
+    </div>
+
+    <footer>
+      <a href="/terms" rel="nofollow">이용약관</a> · <a href="/privacy" rel="nofollow">개인정보처리방침</a>
+    </footer>
+  </div>
+</div>
+
+<script>
+  // === 여기에 네 값 입력 ===
+  const CLIENT_ID    = "SmRoHQeEDCuNEiFMive2"; // ← 네이버 Client ID
+  const REDIRECT_URI = "https://soolimi391.github.io/callback"; // 콜백(검수용)
+
+  // state 생성/저장
+  function genState(){ try{ const a=new Uint8Array(16); crypto.getRandomValues(a); return [...a].map(x=>x.toString(16).padStart(2,"0")).join(""); }catch{ return (Math.random()+"").slice(2)+Date.now(); } }
+  const state = sessionStorage.getItem("naver_oauth_state") || genState();
+  sessionStorage.setItem("naver_oauth_state", state);
+
+  // 화면에 노출
+  document.getElementById("cid").textContent = CLIENT_ID;
+  document.getElementById("ru").textContent  = REDIRECT_URI;
+  document.getElementById("st").textContent  = state;
+
+  // 버튼 → OAuth authorize
+  document.getElementById("naverBtn").onclick = () => {
+    const u = new URL("https://nid.naver.com/oauth2.0/authorize");
+    u.searchParams.set("response_type","code");
+    u.searchParams.set("client_id", CLIENT_ID);
+    u.searchParams.set("redirect_uri", REDIRECT_URI);
+    u.searchParams.set("state", state);
+    location.href = u.toString();
+  };
+</script>
+
+<noscript>자바스크립트가 필요합니다.</noscript>
