@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팔공자동차 특가 견적</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .logo {
+            max-width: 180px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 22px;
+            color: #111;
+            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        p.sub-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        p.sub-text span {
+            color: #e53935;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        /* 선택사항 표시를 위한 스타일 */
+        span.optional {
+            font-size: 12px;
+            color: #888;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+            background-color: #fafafa;
+        }
+        input:focus {
+            border-color: #222;
+            background-color: #fff;
+            outline: none;
+        }
+        /* 안내 문구 스타일 */
+        .info-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+            padding-left: 2px;
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background-color: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="https://80car.co.kr/common/img/logo.svg" alt="80car 로고" class="logo">
+        
+        <h2>국내 최저가<br>장기렌트/리스 특가 확인</h2>
+        <p class="sub-text">
+            초기비용 0원! <span>즉시출고 가능 차량</span> 보유<br>
+            지금 바로 최저가 견적을 확인하세요.
+        </p>
+
+        <div class="form-group">
+            <label for="name">고객명</label>
+            <input type="text" id="name" placeholder="성함을 입력해주세요">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">연락처</label>
+            <input type="tel" id="phone" placeholder="010-0000-0000" maxlength="13" oninput="autoHyphen(this)">
+        </div>
+
+        <div class="form-group">
+            <label for="car">관심 차량 <span class="optional">(선택사항)</span></label>
+            <input type="text" id="car" placeholder="예) 그랜저, 쏘렌토, GV80">
+            <div class="info-text">※ 입력하지 않으셔도 무료 상담이 가능합니다.</div>
+        </div>
+
+        <button onclick="submitForm()">무료 견적 확인하기</button>
+    </div>
+
+    <script>
+        function autoHyphen(target) {
+            target.value = target.value
+                .replace(/[^0-9]/g, '')
+                .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+                .replace(/(\-{1,2})$/g, "");
+        }
+
+        function submitForm() {
+            // 기존 URL 그대로 사용
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxaGfEPgL-nv5Ct7dzugGVul_AOdBNV5LnenezFhoTF-LUkEtbZHVpw_G5T4k3jp93q/exec';
+
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            // 차량명은 입력 안 할 수도 있으니 빈칸이어도 괜찮음
+            const car = document.getElementById('car').value.trim(); 
+
+            if (!name) {
+                alert('성함을 입력해주세요.');
+                document.getElementById('name').focus();
+                return;
+            }
+            if (!phone) {
+                alert('연락처를 입력해주세요.');
+                document.getElementById('phone').focus();
+                return;
+            }
+            if (phone.length < 12) {
+                alert('올바른 휴대폰 번호를 입력해주세요.\n예: 010-1234-5678');
+                document.getElementById('phone').focus();
+                return;
+            }
+
+            // 데이터에 'car' 추가
+            const data = { name: name, phone: phone, car: car };
+
+            const btn = document.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = '접수 중입니다...';
+            btn.disabled = true;
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                alert('무료 견적 신청이 완료되었습니다!\n홈페이지로 이동합니다.');
+                window.location.href = 'https://80car.co.kr/';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                btn.innerText = originalText;
+                btn.disabled = false;
+            });
+        }
+    </script>
+
+</body>
+</html>
