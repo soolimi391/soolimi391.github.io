@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>영혼복귀연구소 - 개인회생/파산 무료상담</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* 기본 설정 */
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #f1f5f9;
+      color: #111827;
+      line-height: 1.6;
+    }
+
+    /* 레이아웃 컨테이너 */
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 3rem 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 2rem;
+    }
+
+    /* 왼쪽: 메시지 & 이미지 영역 */
+    .left {
+      flex: 1;
+      min-width: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* 메인 카피 */
+    .left h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0.5rem 0 1.2rem 0;
+      line-height: 1.3;
+      word-break: keep-all;
+    }
+
+    .left h1 span {
+      color: #1d4ed8;
+    }
+
+    /* 경각심 문구 (빨간색 강조) */
+    .warning-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #b91c1c;
+      background: #fef2f2;
+      padding: 1rem;
+      border-left: 5px solid #b91c1c;
+      margin-bottom: 1.5rem;
+      border-radius: 4px;
+    }
+
+    /* 설명 문구 */
+    .description {
+      font-size: 1.05rem;
+      color: #4b5563;
+      margin-bottom: 1.5rem;
+    }
+
+    /* 이미지 스타일 */
+    .left img {
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+      margin-top: 1rem;
+    }
+
+    /* 오른쪽: 입력 폼 영역 */
+    .right {
+      flex: 1;
+      min-width: 300px;
+      max-width: 420px;
+      padding: 2.5rem;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+      position: sticky;
+      top: 2rem;
+    }
+
+    /* 브랜드 타이틀 (폼 상단) */
+    .form-brand-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: #1e3a8a;
+        text-align: center;
+        margin-bottom: 0.2rem;
+        letter-spacing: -1px;
+    }
+
+    .right h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      color: #334155;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .right p.sub-title {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-bottom: 2rem;
+    }
+
+    /* 폼 스타일 */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    input[type="text"],
+    input[type="tel"] {
+      padding: 0.9rem;
+      margin-top: 0.4rem;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+      background-color: #f8fafc;
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #1e3a8a;
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    /* 버튼 스타일 */
+    button {
+      margin-top: 2rem;
+      padding: 1.1rem;
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+      color: white;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.3);
+      transition: transform 0.1s;
+    }
+
+    button:hover {
+      background: #172554;
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* 체크박스 그룹 */
+    .checkbox-group {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .checkbox-item {
+      margin-bottom: 0.8rem;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      color: #334155;
+    }
+
+    .checkbox-label input {
+      margin-right: 0.6rem;
+      width: 18px;
+      height: 18px;
+      accent-color: #1e3a8a;
+    }
+
+    .details-link {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-left: 1.8rem;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* 후기 섹션 스타일 */
+    .testimonials {
+      background: #1e3a8a;
+      padding: 3rem 0;
+      color: white;
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+
+    .testimonial-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .testimonial-header h3 {
+        font-size: 1.8rem;
+        margin: 0;
+        color: #fff;
+    }
+
+    .testimonial-track {
+      display: flex;
+      gap: 1.5rem;
+      width: max-content;
+      animation: scroll-left 35s linear infinite;
+    }
+
+    .testimonial {
+      flex: 0 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      min-width: 280px;
+      max-width: 300px;
+      color: #1f2937;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .testimonial p {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .testimonial span {
+      display: block;
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* 📱 모바일 최적화 (폼을 맨 위로 올림) */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column; /* 세로 정렬 */
+        padding: 1.5rem 1rem;
+      }
+
+      /* 폼 영역을 맨 위로 올리는 핵심 코드 */
+      .right {
+        order: -1; /* 순서를 맨 앞으로 */
+        margin-bottom: 2rem; /* 폼과 아래 설명 사이 간격 */
+        width: 100%; /* 가로 꽉 차게 */
+        box-sizing: border-box;
+        padding: 1.5rem;
+      }
+      
+      .left {
+        order: 1; /* 설명 영역은 그 다음 */
+      }
+
+      .left h1 {
+        font-size: 1.8rem;
+      }
+      
+      .form-brand-title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="container">
+    
+    <div class="left">
+      <h1>
+        영끌로 지친 영혼을<br>
+        <span>법으로 제자리로</span> 돌려놓습니다.
+      </h1>
+
+      <div class="warning-text">
+        "아무것도 하지 않으면 아무 일도 달라지지 않고<br>
+        상황은 절대 저절로 좋아지지 않습니다."
+      </div>
+
+      <div class="description">
+        <p>✅ <strong>개인회생·개인파산</strong>을 1분 안에 핵심만 딱 이해시켜 드립니다.</p>
+        <p>✅ <strong>독촉·압류</strong>를 지금 바로 멈추는 방법부터 탕감 구조, 절차까지.</p>
+        <p>✅ <strong>코인·주식 빚</strong>, 소득·재산 조건처럼 민감한 부분도 명쾌하게.</p>
+        <p style="margin-top: 1rem; color: #1e3a8a; font-weight: 700;">
+          혼자 버티지 마세요. 새 출발의 길을 함께 찾아드리겠습니다.
+        </p>
+      </div>
+
+      <img src="https://soolimi391.github.io/soul_img.png" alt="영혼복귀연구소 메인 이미지">
+    </div>
+
+    <div class="right">
+      <div class="form-brand-title">영혼복귀연구소</div>
+      <h2>무료 상담 신청</h2>
+      <p class="sub-title">비공개 1:1 상담으로 가능성을 확인하세요.</p>
+      
+      <form id="consultForm">
+        <input type="hidden" id="refInput" name="ref" value="">
+        
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="예: 김철수" required>
+
+        <label for="phone">전화번호</label>
+        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" maxlength="13" required oninput="autoHyphen(this)">
+
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <label class="checkbox-label">
+              <input type="checkbox" name="privacyConsent" id="privacyCheck" required checked>
+              [필수] 개인정보 수집 및 이용 동의
+            </label>
+            <div class="details-link" onclick="openModal('privacy')">전체 내용 보기</div>
+          </div>
+
+          <div class="checkbox-item">
+            <label class="checkbox-label">
+              <input type="checkbox" name="marketingConsent" id="marketingCheck" checked>
+              [선택] 마케팅 정보 수신 동의<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(문자, 전화, 카카오톡 등)
+            </label>
+            <div class="details-link" onclick="openModal('marketing')">전체 내용 보기</div>
+          </div>
+        </div>
+
+        <button type="submit">내 탕감률 확인하기</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="testimonial-header">
+      <h3>"용기 내어 문을 두드린 분들의 이야기"</h3>
+    </div>
+    <div class="testimonial-track">
+      <div class="testimonial">
+        <p>"매일 울리는 독촉 전화가 멈췄어요. 감사합니다."</p><span>박** 님 (30대, 주식 손실)</span>
+      </div>
+      <div class="testimonial">
+        <p>"코인 빚도 탕감이 될 줄 몰랐습니다. 다시 시작합니다."</p><span>이** 님 (20대, 코인 빚)</span>
+      </div>
+      <div class="testimonial">
+        <p>"이자가 원금보다 많았는데, 원금 80% 탕감받았습니다."</p><span>김** 님 (40대, 사업 실패)</span>
+      </div>
+      <div class="testimonial">
+        <p>"가족들 모르게 진행해주셔서 정말 다행입니다."</p><span>최** 님 (30대, 회사원)</span>
+      </div>
+      <div class="testimonial">
+        <p>"아무것도 안 했다면 지금쯤 어떻게 됐을지 끔찍합니다."</p><span>정** 님 (50대, 생활고)</span>
+      </div>
+      <div class="testimonial">
+        <p>"월급 압류가 풀려서 이제 숨통이 트입니다."</p><span>강** 님 (30대, 직장인)</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const rawRef = urlParams.get('ref');
+      const fullRef = rawRef || '기타';
+      document.getElementById("refInput").value = fullRef;
+    });
+
+    function autoHyphen(el) {
+      el.value = el.value
+        .replace(/[^0-9]/g, '')
+        .replace(/(^02|^01[0-9]{1}|[0-9]{3})([0-9]+)?([0-9]{4})$/, '$1-$2-$3')
+        .replace('--', '-');
+    }
+
+    document.getElementById("consultForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      const privacyChecked = document.getElementById("privacyCheck").checked;
+      const marketingChecked = document.getElementById("marketingCheck").checked;
+
+      if (!privacyChecked) {
+        alert("개인정보 수집 및 이용에 동의하셔야 상담 신청이 가능합니다.");
+        return;
+      }
+
+      formData.append("privacyConsent", privacyChecked ? "동의함" : "미동의");
+      formData.append("marketingConsent", marketingChecked ? "동의함" : "미동의");
+
+      // 🚨 구글 앱스 스크립트 URL 입력란
+      const scriptURL = "https://script.google.com/macros/s/AKfycbw1Jr6fujIMdq7UkQAJMYI1aeqwKVfFbJN4cGfHIKqX446-KadGrusdTyxIfNUvp_Pq/exec"; 
+
+      if (scriptURL === "여기에_구글_앱스_스크립트_URL을_넣으세요" || scriptURL === "") {
+        alert("신청이 접수되었습니다. (현재는 테스트 모드입니다)");
+        return;
+      }
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: formData,
+        mode: "no-cors"
+      }).then(() => {
+        alert("신청이 성공적으로 접수되었습니다. 담당자가 빠르게 연락드리겠습니다.");
+        window.location.reload();
+      }).catch(err => {
+        alert("접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        console.error(err);
+      });
+    });
+
+    const fullTexts = {
+      privacy: `📄 [필수] 개인정보 수집 및 이용 동의
+
+'영혼복귀연구소'는 원활한 무료 상담 제공을 위해 아래와 같이 개인정보를 수집합니다.
+
+1. 수집 항목: 이름, 전화번호
+2. 수집 목적: 개인회생/파산 자격 상담, 상담 접수 및 결과 안내
+3. 보유 기간: 상담 완료 후 목적 달성 시 파기 (단, 법령에 따른 보존 필요 시 해당 기간 보관)
+
+※ 동의를 거부할 수 있으나, 거부 시 무료 상담 서비스 이용이 불가능합니다.`,
+
+      marketing: `📢 [선택] 마케팅 정보 수신 동의
+
+신청하신 전화번호로 '영혼복귀연구소'가 제공하는 채무 해결 정보, 법률 정책 안내, 이벤트 등의 정보를 문자(SMS), 전화, 카카오톡 등을 통해 수신하는 것에 동의합니다.
+
+※ 동의하지 않으셔도 기본 상담 서비스는 이용 가능합니다.`
+    };
+
+    function openModal(type) {
+      document.getElementById('modalContent').textContent = fullTexts[type];
+      document.getElementById('modalOverlay').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').style.display = 'none';
+    }
+  </script>
+
+  <div id="modalOverlay" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+  ">
+    <div style="
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    ">
+      <button onclick="closeModal()" style="
+        position: absolute;
+        top: 1rem; right: 1rem;
+        background: transparent;
+        color: #333;
+        font-size: 1.5rem;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        width: auto;
+      ">&times;</button>
+      <div id="modalContent" style="white-space: pre-line; line-height: 1.6; color: #333; font-size: 0.95rem;"></div>
+    </div>
+  </div>
+
+</body>
+</html>
