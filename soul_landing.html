@@ -1,403 +1,677 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>영혼복귀연구소 - 개인회생/파산 무료상담</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>법무법인 이일 - 개인회생/파산 무료상담</title>
+  
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
   <style>
-    /* 기본 설정 */
-    body {
-      margin: 0;
-      font-family: 'Noto Sans KR', sans-serif;
-      background-color: #f1f5f9;
-      color: #111827;
-      line-height: 1.6;
+    /* =========================================
+       1. 디자인 변수 및 기본 설정
+       ========================================= */
+    :root {
+      --navy-dark: #2c3e50;       /* 메인: 진한 네이비 */
+      --gold-accent: #B67E4F;     /* 포인트: 골드 */
+      --white: #ffffff;
+      --text-main: #333333;
+      --text-sub: #555555;
     }
 
-    /* 레이아웃 컨테이너 */
-    .container {
+    body {
+      margin: 0;
+      font-family: 'Pretendard', sans-serif;
+      background-color: var(--white);
+      color: var(--text-main);
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    * { box-sizing: border-box; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    a { text-decoration: none; color: inherit; }
+
+    /* =========================================
+       2. 헤더 (로고 영역)
+       ========================================= */
+    header {
+      background-color: var(--white);
+      border-bottom: 1px solid #eee;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-img {
+      height: 45px;
+      width: auto;
+    }
+
+    /* =========================================
+       3. 메인 히어로 섹션 (배경 수정됨)
+       ========================================= */
+    .hero-section {
+      position: relative;
+      padding: 5rem 1rem;
+      background-color: #f8f9fa; /* 기본 배경색 (이미지 뒤에 깔림) */
+      overflow: hidden;
+    }
+
+    /* [핵심] 배경 이미지 반투명(0.15) 처리 */
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      
+      /* [수정] 이미지 경로 img/ 추가 */
+      background-image: url('img/법무법인이일_배경.png');
+      background-size: cover;
+      background-position: center;
+      
+      /* 투명도 0.35 (35%) */
+      opacity: 0.35; 
+      z-index: 0;
+    }
+
+    .hero-container {
+      position: relative;
+      z-index: 1; /* 배경보다 내용이 위에 올라오게 설정 */
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: flex-start;
-      padding: 3rem 1rem;
       max-width: 1200px;
       margin: 0 auto;
-      gap: 2rem;
+      gap: 3rem;
     }
 
-    /* 왼쪽: 메시지 & 이미지 영역 */
-    .left {
+    /* [수정됨] 왼쪽 메시지 영역: 흰색 반투명 박스 적용 */
+    .hero-left {
       flex: 1;
       min-width: 320px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      
+      /* 흰색 45% 투명도 */
+      background-color: rgba(255, 255, 255, 0.45); 
+      
+      padding: 3rem; 
+      border-radius: 12px; /* 둥근 모서리 */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* 은은한 그림자 */
+      border: 1px solid rgba(255, 255, 255, 0.5); /* 테두리도 반투명 */
+      backdrop-filter: blur(5px); /* 배경 흐림 효과 (유리 느낌) */
     }
 
-    /* 메인 카피 */
-    .left h1 {
-      font-size: 2.4rem;
+    .hero-left h1 {
+      font-size: 2.8rem;
       font-weight: 800;
-      color: #0f172a;
-      margin: 0.5rem 0 1.2rem 0;
+      color: var(--navy-dark); /* 진한 네이비 */
+      margin: 0 0 1.5rem 0;
       line-height: 1.3;
-      word-break: keep-all;
     }
 
-    .left h1 span {
-      color: #1d4ed8;
+    .hero-left h1 span {
+      color: var(--gold-accent);
     }
 
-    /* 경각심 문구 (빨간색 강조) */
+    /* [수정됨] 경고 박스: 흰색 반투명 배경을 새로 입히기 */
+    .warning-box {
+      /* 흰색(255, 255, 255) + 투명도 0.1 (10%) */
+      background-color: rgba(255, 255, 255, 0.1); 
+      
+      border-left: 5px solid #c0392b;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 4px;
+      
+      /* (선택사항) 박스가 겹친 느낌을 더 살려주는 흐림 효과 */
+      backdrop-filter: blur(2px); 
+    }
     .warning-text {
       font-size: 1.15rem;
       font-weight: 700;
-      color: #b91c1c;
-      background: #fef2f2;
-      padding: 1rem;
-      border-left: 5px solid #b91c1c;
-      margin-bottom: 1.5rem;
-      border-radius: 4px;
+      color: #c0392b;
+      margin: 0;
     }
 
-    /* 설명 문구 */
-    .description {
-      font-size: 1.05rem;
-      color: #4b5563;
-      margin-bottom: 1.5rem;
+    .check-list p {
+      font-size: 1.15rem;
+      color: var(--text-main); /* 글씨색 진하게 */
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+      position: relative;
     }
 
-    /* 이미지 스타일 */
-    .left img {
-      width: 100%;
-      max-width: 500px;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-      margin-top: 1rem;
+    .check-list p::before {
+      content: '\f00c'; 
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      color: var(--gold-accent);
+      position: absolute;
+      left: 0;
+      top: 2px;
+      font-size: 1.2rem;
     }
 
-    /* 오른쪽: 입력 폼 영역 */
-    .right {
+    /* [수정됨] 오른쪽 폼: 배경을 흰색 반투명으로 변경 */
+    .hero-right {
       flex: 1;
       min-width: 300px;
-      max-width: 420px;
+      max-width: 450px;
+      
+      /* 흰색 45% 투명도 */
+      background-color: rgba(255, 255, 255, 0.45); 
+      
       padding: 2.5rem;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      border: 1px solid #e2e8f0;
-      position: sticky;
-      top: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(44, 62, 80, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.5); /* 테두리도 반투명 */
+      backdrop-filter: blur(5px); /* 배경 흐림 효과 추가 */
     }
 
-    /* 브랜드 타이틀 (폼 상단) */
-    .form-brand-title {
-        font-size: 2.2rem;
-        font-weight: 900;
-        color: #1e3a8a;
-        text-align: center;
-        margin-bottom: 0.2rem;
-        letter-spacing: -1px;
+    .form-header { text-align: center; margin-bottom: 2rem; }
+    .form-brand { font-size: 0.9rem; color: var(--gold-accent); font-weight: 700; letter-spacing: 1px; }
+    .form-header h2 { font-size: 1.8rem; color: var(--navy-dark); margin: 0.5rem 0; }
+    
+    label { display: block; margin-top: 1.2rem; font-weight: 600; color: var(--navy-dark); }
+    
+    input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      background-color: #fafafa;
     }
 
-    .right h2 {
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-      color: #334155;
+    .submit-btn {
+      width: 100%;
+      margin-top: 2rem;
+      padding: 1.2rem;
+      background-color: var(--navy-dark);
+      color: var(--white);
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover { background-color: #1a252f; }
+
+    .checkbox-group { margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-sub); }
+    .checkbox-item { margin-bottom: 0.8rem; display: flex; align-items: flex-start; }
+    .checkbox-item input { margin-right: 0.5rem; margin-top: 4px; accent-color: var(--navy-dark); }
+    .details-btn { font-size: 0.8rem; color: #999; text-decoration: underline; margin-left: auto; cursor: pointer; white-space: nowrap; }
+
+    /* =========================================
+       [추가됨] 업무협약서 섹션
+       ========================================= */
+    .agreement-section {
+      background-color: #fff;
+      padding: 4rem 1rem 0; /* 하단 패딩 0으로 설정하여 변호사 섹션과 자연스럽게 연결 */
       text-align: center;
-      font-weight: 600;
     }
 
-    .right p.sub-title {
-      text-align: center;
-      font-size: 0.95rem;
-      color: #64748b;
+    .agreement-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--navy-dark);
       margin-bottom: 2rem;
     }
 
-    /* 폼 스타일 */
-    form {
+    .agreement-grid {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .agreement-img {
+      max-width: 100%;
+      width: 400px; /* 적절한 크기로 조정 */
+      height: auto;
+      border: 1px solid #eee;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+
+    /* =========================================
+       4. 구성원 소개 섹션 (사진 크기 대폭 축소)
+       ========================================= */
+    .lawyer-section {
+      background-color: #F8F9FA;
+      padding: 6rem 1rem;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-title h2 {
+      font-size: 2.4rem;
+      color: var(--navy-dark);
+      margin-bottom: 1rem;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background-color: var(--gold-accent);
+      margin: 20px auto 0;
+    }
+
+    .lawyer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .lawyer-card {
+      background: var(--white);
+      border: 1px solid #eee;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
       display: flex;
       flex-direction: column;
     }
 
-    label {
-      margin-top: 1.2rem;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: #334155;
+    .lawyer-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     }
 
-    input[type="text"],
-    input[type="tel"] {
-      padding: 0.9rem;
-      margin-top: 0.4rem;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      font-size: 1rem;
-      background-color: #f8fafc;
-      transition: all 0.2s;
+    /* [수정] 사진 영역 높이 줄이고, 사진 크기 제한 */
+    .lawyer-photo-area {
+      width: 100%;
+      height: 250px; /* 높이를 대폭 줄임 */
+      background-color: #f8f9fa;
+      border-bottom: 3px solid var(--gold-accent);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* 사진을 아래로 정렬 */
+      padding: 1rem 1rem 0; /* 상단, 좌우 여백 추가 */
     }
 
-    input:focus {
-      outline: none;
-      border-color: #1e3a8a;
-      background-color: #fff;
-      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    .lawyer-photo-area img {
+      width: auto;  /* 너비 자동 */
+      height: 100%; /* 높이 꽉 채움 */
+      max-width: 90%; /* 카드를 넘지 않도록 제한 */
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 8px 8px 0 0; /* 상단 모서리 둥글게 */
+      box-shadow: 0 -5px 15px rgba(0,0,0,0.05); /* 사진에 살짝 그림자 */
     }
 
-    /* 버튼 스타일 */
-    button {
-      margin-top: 2rem;
-      padding: 1.1rem;
-      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-      color: white;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+    .lawyer-info-area {
+      padding: 2rem;
+      flex: 1;
+    }
+
+    .lawyer-name {
+      font-size: 1.5rem;
       font-weight: 700;
-      box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.3);
-      transition: transform 0.1s;
-    }
-
-    button:hover {
-      background: #172554;
-      transform: translateY(-2px);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    /* 체크박스 그룹 */
-    .checkbox-group {
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-    }
-
-    .checkbox-item {
-      margin-bottom: 0.8rem;
-    }
-
-    .checkbox-label {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      color: #334155;
-    }
-
-    .checkbox-label input {
-      margin-right: 0.6rem;
-      width: 18px;
-      height: 18px;
-      accent-color: #1e3a8a;
-    }
-
-    .details-link {
-      font-size: 0.8rem;
-      color: #64748b;
-      margin-left: 1.8rem;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    /* 후기 섹션 스타일 */
-    .testimonials {
-      background: #1e3a8a;
-      padding: 3rem 0;
-      color: white;
-      overflow: hidden;
-      margin-top: 2rem;
-    }
-
-    .testimonial-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    
-    .testimonial-header h3 {
-        font-size: 1.8rem;
-        margin: 0;
-        color: #fff;
-    }
-
-    .testimonial-track {
-      display: flex;
-      gap: 1.5rem;
-      width: max-content;
-      animation: scroll-left 35s linear infinite;
-    }
-
-    .testimonial {
-      flex: 0 0 auto;
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 1.5rem;
-      min-width: 280px;
-      max-width: 300px;
-      color: #1f2937;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .testimonial p {
-      font-size: 1rem;
-      font-weight: 500;
+      color: var(--navy-dark);
       margin-bottom: 0.5rem;
+    }
+
+    .lawyer-role {
+      font-size: 0.95rem;
+      color: var(--gold-accent);
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      display: block;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .career-list li {
+      position: relative;
+      padding-left: 14px;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      color: var(--text-sub);
       line-height: 1.4;
     }
 
-    .testimonial span {
-      display: block;
-      font-size: 0.85rem;
-      color: #6b7280;
-      margin-top: 0.5rem;
+    .career-list li::before {
+      content: '•';
+      color: var(--gold-accent);
+      position: absolute;
+      left: 0;
       font-weight: bold;
     }
 
-    @keyframes scroll-left {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    /* =========================================
+       5. 푸터
+       ========================================= */
+    footer {
+      background-color: var(--navy-dark);
+      color: #bdc3c7;
+      padding: 4rem 1rem;
+      font-size: 0.9rem;
     }
 
-    /* 📱 모바일 최적화 (폼을 맨 위로 올림) */
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+    }
+
+    .footer-col h3 {
+      color: var(--white);
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+      border-left: 3px solid var(--gold-accent);
+      padding-left: 10px;
+    }
+
+    .footer-col p { margin: 0.6rem 0; color: #ecf0f1; }
+    .footer-col span { color: #95a5a6; display: inline-block; width: 70px; }
+
+    .copyright {
+      max-width: 1200px;
+      margin: 3rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid #34495e;
+      text-align: left;
+      font-size: 0.85rem;
+      color: #7f8c8d;
+    }
+
+    /* =========================================
+       반응형 (Mobile)
+       ========================================= */
     @media (max-width: 768px) {
-      .container {
-        flex-direction: column; /* 세로 정렬 */
-        padding: 1.5rem 1rem;
+      .hero-section {
+        padding: 3rem 1rem;
       }
 
-      /* 폼 영역을 맨 위로 올리는 핵심 코드 */
-      .right {
-        order: -1; /* 순서를 맨 앞으로 */
-        margin-bottom: 2rem; /* 폼과 아래 설명 사이 간격 */
-        width: 100%; /* 가로 꽉 차게 */
-        box-sizing: border-box;
+      .hero-container {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .hero-right {
+        order: -1;
+        width: 100%;
+        max-width: 100%;
         padding: 1.5rem;
       }
-      
-      .left {
-        order: 1; /* 설명 영역은 그 다음 */
+
+      .hero-left {
+        order: 1;
+        text-align: center;
       }
 
-      .left h1 {
-        font-size: 1.8rem;
+      .hero-left h1 { font-size: 2.2rem; }
+      .check-list p { text-align: left; display: inline-block; }
+
+      .lawyer-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
       }
       
-      .form-brand-title {
-        font-size: 1.8rem;
-      }
+      .lawyer-photo-area { height: 300px; } /* 모바일에서는 조금 더 키움 */
+
+      .footer-inner { grid-template-columns: 1fr; }
+      .copyright { text-align: center; }
     }
   </style>
 </head>
-
 <body>
 
-  <section class="container">
-    
-    <div class="left">
-      <h1>
-        영끌로 지친 영혼을<br>
-        <span>법으로 제자리로</span> 돌려놓습니다.
-      </h1>
-
-      <div class="warning-text">
-        "아무것도 하지 않으면 아무 일도 달라지지 않고<br>
-        상황은 절대 저절로 좋아지지 않습니다."
-      </div>
-
-      <div class="description">
-        <p>✅ <strong>개인회생·개인파산</strong>을 1분 안에 핵심만 딱 이해시켜 드립니다.</p>
-        <p>✅ <strong>독촉·압류</strong>를 지금 바로 멈추는 방법부터 탕감 구조, 절차까지.</p>
-        <p>✅ <strong>코인·주식 빚</strong>, 소득·재산 조건처럼 민감한 부분도 명쾌하게.</p>
-        <p style="margin-top: 1rem; color: #1e3a8a; font-weight: 700;">
-          혼자 버티지 마세요. 새 출발의 길을 함께 찾아드리겠습니다.
-        </p>
-      </div>
-
-      <img src="https://soolimi391.github.io/soul_img.png" alt="영혼복귀연구소 메인 이미지">
+  <header>
+    <div class="header-inner">
+      <img src="img/법무법인이일_로고.png" alt="법무법인 이일" class="logo-img">
     </div>
+  </header>
 
-    <div class="right">
-      <div class="form-brand-title">영혼복귀연구소</div>
-      <h2>무료 상담 신청</h2>
-      <p class="sub-title">비공개 1:1 상담으로 가능성을 확인하세요.</p>
+  <section class="hero-section">
+    <div class="hero-container">
       
-      <form id="consultForm">
-        <input type="hidden" id="refInput" name="ref" value="">
-        
-        <label for="name">이름</label>
-        <input type="text" id="name" name="name" placeholder="예: 김철수" required>
+      <div class="hero-left">
+        <h1 style="font-size: 2.4rem; margin-bottom: 1.2rem;">
+          감당할 수 없는 빚,<br>
+          <span>법무법인 이일</span>이 해결해 드립니다.
+        </h1>
 
-        <label for="phone">전화번호</label>
-        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" maxlength="13" required oninput="autoHyphen(this)">
-
-        <div class="checkbox-group">
-          <div class="checkbox-item">
-            <label class="checkbox-label">
-              <input type="checkbox" name="privacyConsent" id="privacyCheck" required checked>
-              [필수] 개인정보 수집 및 이용 동의
-            </label>
-            <div class="details-link" onclick="openModal('privacy')">전체 내용 보기</div>
-          </div>
-
-          <div class="checkbox-item">
-            <label class="checkbox-label">
-              <input type="checkbox" name="marketingConsent" id="marketingCheck" checked>
-              [선택] 마케팅 정보 수신 동의<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(문자, 전화, 카카오톡 등)
-            </label>
-            <div class="details-link" onclick="openModal('marketing')">전체 내용 보기</div>
-          </div>
+        <div class="warning-box" style="padding: 1rem; margin-bottom: 1.5rem;">
+          <p class="warning-text" style="font-size: 1.05rem;">
+            "독촉과 압류의 두려움에서 벗어나세요.<br>
+            법률이 보장하는 정당한 권리로 새로운 삶을 시작하세요."
+          </p>
         </div>
 
-        <button type="submit">내 탕감률 확인하기</button>
-      </form>
+        <div style="margin-bottom: 1.5rem; color: #c0392b; font-weight: 800; font-size: 1.4rem; border-bottom: 3px solid #c0392b; display: inline-block; padding-bottom: 5px;">
+          인천시 협업 법무법인 · 압도적 승소율 100%
+        </div>
+
+        <div class="check-list">
+          <p><strong>개인회생·파산</strong> 자격 무료 진단</p>
+          <p><strong>무리한 수임 NO</strong>, 정직한 가능성 진단</p>
+          <p><strong>기각 시 100% 수임료 환불</strong> 보장</p>
+          <p><strong>비공개 비밀 상담</strong> 철저 준수</p>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="form-header">
+          <img src="img/법무법인이일_로고.png" alt="법무법인 이일" style="height: 35px; margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto;">
+          <h2>무료 상담 신청</h2>
+          <p style="color: #666; font-size: 0.95rem;">전문 변호사가 직접 검토해 드립니다.</p>
+        </div>
+        
+        <form id="consultForm">
+          <input type="hidden" id="refInput" name="ref" value="">
+          
+          <label for="name">이름</label>
+          <input type="text" id="name" name="name" placeholder="신청자 성함" required>
+
+          <label for="phone">연락처</label>
+          <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" maxlength="13" required oninput="autoHyphen(this)">
+
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <input type="checkbox" name="privacyConsent" id="privacyCheck" required checked>
+              <span>[필수] 개인정보 수집 및 이용 동의</span>
+              <span class="details-btn" onclick="openModal('privacy')">보기</span>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="marketingConsent" id="marketingCheck" checked>
+              <span>[선택] 마케팅 정보 수신 동의</span>
+              <span class="details-btn" onclick="openModal('marketing')">보기</span>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">내 탕감 가능성 확인하기</button>
+        </form>
+      </div>
+
     </div>
   </section>
 
-  <section class="testimonials">
-    <div class="testimonial-header">
-      <h3>"용기 내어 문을 두드린 분들의 이야기"</h3>
-    </div>
-    <div class="testimonial-track">
-      <div class="testimonial">
-        <p>"매일 울리는 독촉 전화가 멈췄어요. 감사합니다."</p><span>박** 님 (30대, 주식 손실)</span>
-      </div>
-      <div class="testimonial">
-        <p>"코인 빚도 탕감이 될 줄 몰랐습니다. 다시 시작합니다."</p><span>이** 님 (20대, 코인 빚)</span>
-      </div>
-      <div class="testimonial">
-        <p>"이자가 원금보다 많았는데, 원금 80% 탕감받았습니다."</p><span>김** 님 (40대, 사업 실패)</span>
-      </div>
-      <div class="testimonial">
-        <p>"가족들 모르게 진행해주셔서 정말 다행입니다."</p><span>최** 님 (30대, 회사원)</span>
-      </div>
-      <div class="testimonial">
-        <p>"아무것도 안 했다면 지금쯤 어떻게 됐을지 끔찍합니다."</p><span>정** 님 (50대, 생활고)</span>
-      </div>
-      <div class="testimonial">
-        <p>"월급 압류가 풀려서 이제 숨통이 트입니다."</p><span>강** 님 (30대, 직장인)</span>
-      </div>
+  <section class="agreement-section">
+    <div class="agreement-title">업무협약 체결 현황</div>
+    <div class="agreement-grid">
+      <img src="img/협업계약서1.png" alt="업무협약서 1" class="agreement-img">
+      <img src="img/협업계약서2.png" alt="업무협약서 2" class="agreement-img">
     </div>
   </section>
+
+  <section class="lawyer-section">
+    <div class="section-title">
+      <h2>법무법인 이일 구성원</h2>
+      <p style="color: #666; font-size: 1.1rem; margin-top: 10px;">결과로 증명하는 변호사들이 함께합니다.</p>
+    </div>
+
+    <div class="lawyer-grid">
+      
+      <div class="lawyer-card">
+        <div class="lawyer-photo-area">
+          <img src="img/서성원 - 대표변호사.jpg" alt="서성원 대표변호사">
+        </div>
+        <div class="lawyer-info-area">
+          <div class="lawyer-name">서성원</div>
+          <div class="lawyer-role">대표변호사</div>
+          <ul class="career-list">
+            <li>성균관대학교 법학과 졸업</li>
+            <li>제21기 사법연수원 수료</li>
+            <li>前 인천지방검찰청 부천지청 형사조정위원</li>
+            <li>前 양천세무서 국세심사위원회 위원</li>
+            <li>現 계양세무서 납세자보호위원회 위원</li>
+            <li>現 부천 투나 고문변호사</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="lawyer-card">
+        <div class="lawyer-photo-area">
+          <img src="img/김창문 - 변호사.jpg" alt="김창문 변호사">
+        </div>
+        <div class="lawyer-info-area">
+          <div class="lawyer-name">김창문</div>
+          <div class="lawyer-role">변호사</div>
+          <ul class="career-list">
+            <li>서울대학교 법학과 졸업</li>
+            <li>미국 컬럼비아대 로스쿨 졸업</li>
+            <li>제16기 사법연수원 수료</li>
+            <li>前 삼성그룹 고문변호사</li>
+            <li>前 강남구청 고문변호사</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="lawyer-card">
+        <div class="lawyer-photo-area">
+          <img src="img/정동운-변호사.jpg" alt="정동운 변호사">
+        </div>
+        <div class="lawyer-info-area">
+          <div class="lawyer-name">정동운</div>
+          <div class="lawyer-role">변호사</div>
+          <ul class="career-list">
+            <li>고려대학교 졸업</li>
+            <li>영남대학교 법학전문대학원 졸업</li>
+            <li>前 법무법인(유한) 주원 변호사</li>
+            <li>서울시 공익변호사</li>
+            <li>서울남부지방법원 국선변호사</li>
+            <li>서울 동작, 관악, 금천 경찰서 자문변호사</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="lawyer-card">
+        <div class="lawyer-photo-area">
+          <img src="img/서민정-변호사.jpg" alt="서민정 변호사">
+        </div>
+        <div class="lawyer-info-area">
+          <div class="lawyer-name">서민정</div>
+          <div class="lawyer-role">변호사</div>
+          <ul class="career-list">
+            <li>성균관대학교 졸업</li>
+            <li>인하대학교 법학전문대학원 졸업</li>
+            <li>前 인천광역시 분쟁조정위원회 위원</li>
+            <li>前 인천광역시 적극행정위원회 위원</li>
+            <li>現 인천광역시 연수구청 정보공개심의회 위원</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="lawyer-card">
+        <div class="lawyer-photo-area">
+          <img src="img/김기훈-변호사.jpg" alt="김기훈 변호사">
+        </div>
+        <div class="lawyer-info-area">
+          <div class="lawyer-name">김기훈</div>
+          <div class="lawyer-role">변호사</div>
+          <ul class="career-list">
+            <li>연세대학교 졸업</li>
+            <li>헌법재판연구원 실무수습</li>
+            <li>인하대학교 법학전문대학원 졸업</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h3>법무법인 이일</h3>
+        <p><span>대표자</span> 서성원</p>
+        <p><span>사업자번호</span> 117-81-27010</p>
+      </div>
+      <div class="footer-col">
+        <h3>서울대표사무소</h3>
+        <p>서울특별시 양천구 신월로 389 (신정동, 남부빌딩) 508호, 509호, 415호</p>
+        <p><span>T.</span> 02-2607-0045</p>
+        <p><span>F.</span> 02-2607-0887</p>
+      </div>
+      <div class="footer-col">
+        <h3>부천 분사무소</h3>
+        <p>부천시 상일로 130, 303호 (법조타운빌딩)</p>
+        <p><span>T.</span> 032-325-1900</p>
+        <p><span>F.</span> 032-324-3900</p>
+      </div>
+    </div>
+    <div class="copyright">
+      Copyright(c) Law Firm E-IL. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="modalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 9999; justify-content: center; align-items: center; padding: 1rem;">
+    <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; position: relative;">
+      <button onclick="closeModal()" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border:none; font-size: 1.5rem; cursor:pointer;">&times;</button>
+      <div id="modalContent" style="white-space: pre-line; line-height: 1.6; color: #333; font-size: 0.95rem;"></div>
+    </div>
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const urlParams = new URLSearchParams(window.location.search);
       const rawRef = urlParams.get('ref');
-      const fullRef = rawRef || '기타';
-      document.getElementById("refInput").value = fullRef;
+      document.getElementById("refInput").value = rawRef || '기타';
     });
 
     function autoHyphen(el) {
-      el.value = el.value
-        .replace(/[^0-9]/g, '')
-        .replace(/(^02|^01[0-9]{1}|[0-9]{3})([0-9]+)?([0-9]{4})$/, '$1-$2-$3')
-        .replace('--', '-');
+      el.value = el.value.replace(/[^0-9]/g, '').replace(/(^02|^01[0-9]{1}|[0-9]{3})([0-9]+)?([0-9]{4})$/, '$1-$2-$3').replace('--', '-');
+    }
+
+    const fullTexts = {
+      privacy: `📄 [필수] 개인정보 수집 및 이용 동의\n\n'법무법인 이일'은 원활한 무료 상담 제공을 위해 아래와 같이 개인정보를 수집합니다.\n\n1. 수집 항목: 이름, 전화번호\n2. 수집 목적: 개인회생/파산 자격 상담, 접수 및 결과 안내\n3. 보유 기간: 상담 완료 후 목적 달성 시 파기\n\n※ 동의를 거부할 수 있으나, 거부 시 무료 상담 서비스 이용이 불가능합니다.`,
+      marketing: `📢 [선택] 마케팅 정보 수신 동의\n\n신청하신 전화번호로 '법무법인 이일'이 제공하는 채무 해결 정보, 법률 정책 안내 등의 정보를 수신하는 것에 동의합니다.`
+    };
+
+    function openModal(type) {
+      document.getElementById('modalContent').textContent = fullTexts[type];
+      document.getElementById('modalOverlay').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').style.display = 'none';
     }
 
     document.getElementById("consultForm").addEventListener("submit", function (e) {
@@ -405,103 +679,23 @@
       const form = e.target;
       const formData = new FormData(form);
 
-      const privacyChecked = document.getElementById("privacyCheck").checked;
-      const marketingChecked = document.getElementById("marketingCheck").checked;
-
-      if (!privacyChecked) {
-        alert("개인정보 수집 및 이용에 동의하셔야 상담 신청이 가능합니다.");
+      if (!document.getElementById("privacyCheck").checked) {
+        alert("개인정보 수집 및 이용에 동의하셔야 합니다.");
         return;
       }
 
-      formData.append("privacyConsent", privacyChecked ? "동의함" : "미동의");
-      formData.append("marketingConsent", marketingChecked ? "동의함" : "미동의");
-
-      // 🚨 구글 앱스 스크립트 URL 입력란
       const scriptURL = "https://script.google.com/macros/s/AKfycbw1Jr6fujIMdq7UkQAJMYI1aeqwKVfFbJN4cGfHIKqX446-KadGrusdTyxIfNUvp_Pq/exec"; 
 
-      if (scriptURL === "여기에_구글_앱스_스크립트_URL을_넣으세요" || scriptURL === "") {
-        alert("신청이 접수되었습니다. (현재는 테스트 모드입니다)");
-        return;
-      }
-
-      fetch(scriptURL, {
-        method: "POST",
-        body: formData,
-        mode: "no-cors"
-      }).then(() => {
-        alert("신청이 성공적으로 접수되었습니다. 담당자가 빠르게 연락드리겠습니다.");
+      fetch(scriptURL, { method: "POST", body: formData, mode: "no-cors" })
+      .then(() => {
+        alert("상담 신청이 완료되었습니다.\n담당 변호사가 빠르게 검토 후 연락드리겠습니다.");
         window.location.reload();
-      }).catch(err => {
-        alert("접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      })
+      .catch(err => {
+        alert("접수 중 오류가 발생했습니다. 다시 시도해주세요.");
         console.error(err);
       });
     });
-
-    const fullTexts = {
-      privacy: `📄 [필수] 개인정보 수집 및 이용 동의
-
-'영혼복귀연구소'는 원활한 무료 상담 제공을 위해 아래와 같이 개인정보를 수집합니다.
-
-1. 수집 항목: 이름, 전화번호
-2. 수집 목적: 개인회생/파산 자격 상담, 상담 접수 및 결과 안내
-3. 보유 기간: 상담 완료 후 목적 달성 시 파기 (단, 법령에 따른 보존 필요 시 해당 기간 보관)
-
-※ 동의를 거부할 수 있으나, 거부 시 무료 상담 서비스 이용이 불가능합니다.`,
-
-      marketing: `📢 [선택] 마케팅 정보 수신 동의
-
-신청하신 전화번호로 '영혼복귀연구소'가 제공하는 채무 해결 정보, 법률 정책 안내, 이벤트 등의 정보를 문자(SMS), 전화, 카카오톡 등을 통해 수신하는 것에 동의합니다.
-
-※ 동의하지 않으셔도 기본 상담 서비스는 이용 가능합니다.`
-    };
-
-    function openModal(type) {
-      document.getElementById('modalContent').textContent = fullTexts[type];
-      document.getElementById('modalOverlay').style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('modalOverlay').style.display = 'none';
-    }
   </script>
-
-  <div id="modalOverlay" style="
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    box-sizing: border-box;
-  ">
-    <div style="
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      max-width: 500px;
-      width: 100%;
-      max-height: 80vh;
-      overflow-y: auto;
-      position: relative;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    ">
-      <button onclick="closeModal()" style="
-        position: absolute;
-        top: 1rem; right: 1rem;
-        background: transparent;
-        color: #333;
-        font-size: 1.5rem;
-        padding: 0;
-        margin: 0;
-        box-shadow: none;
-        width: auto;
-      ">&times;</button>
-      <div id="modalContent" style="white-space: pre-line; line-height: 1.6; color: #333; font-size: 0.95rem;"></div>
-    </div>
-  </div>
-
 </body>
 </html>
