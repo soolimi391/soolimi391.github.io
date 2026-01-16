@@ -216,39 +216,8 @@
     .checkbox-item input { margin-right: 0.5rem; margin-top: 4px; accent-color: var(--navy-dark); }
     .details-btn { font-size: 0.8rem; color: #999; text-decoration: underline; margin-left: auto; cursor: pointer; white-space: nowrap; }
 
-    /* =========================================
-       [추가됨] 업무협약서 섹션
-       ========================================= */
-    .agreement-section {
-      background-color: #fff;
-      padding: 4rem 1rem 0; /* 하단 패딩 0으로 설정하여 변호사 섹션과 자연스럽게 연결 */
-      text-align: center;
-    }
-
-    .agreement-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--navy-dark);
-      margin-bottom: 2rem;
-    }
-
-    .agreement-grid {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .agreement-img {
-      max-width: 100%;
-      width: 400px; /* 적절한 크기로 조정 */
-      height: auto;
-      border: 1px solid #eee;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
+    /* [삭제됨] 업무협약서 섹션 관련 CSS 삭제
+    */
 
     /* =========================================
        4. 구성원 소개 섹션 (사진 크기 대폭 축소)
@@ -514,14 +483,6 @@
     </div>
   </section>
 
-  <section class="agreement-section">
-    <div class="agreement-title">업무협약 체결 현황</div>
-    <div class="agreement-grid">
-      <img src="img/협업계약서1.png" alt="업무협약서 1" class="agreement-img">
-      <img src="img/협업계약서2.png" alt="업무협약서 2" class="agreement-img">
-    </div>
-  </section>
-
   <section class="lawyer-section">
     <div class="section-title">
       <h2>법무법인 이일 구성원</h2>
@@ -674,16 +635,25 @@
       document.getElementById('modalOverlay').style.display = 'none';
     }
 
-    document.getElementById("consultForm").addEventListener("submit", function (e) {
+document.getElementById("consultForm").addEventListener("submit", function (e) {
       e.preventDefault();
+      
       const form = e.target;
-      const formData = new FormData(form);
+      const submitBtn = form.querySelector(".submit-btn"); // 버튼 요소를 찾음
+      const originalBtnText = submitBtn.innerText; // 원래 버튼 텍스트 저장
 
+      // 1. [추가됨] 유효성 검사 (개인정보 동의 확인)
       if (!document.getElementById("privacyCheck").checked) {
         alert("개인정보 수집 및 이용에 동의하셔야 합니다.");
         return;
       }
 
+      // 2. [수정됨] 버튼을 '접수 중...' 상태로 변경하고 비활성화 (중복 클릭 방지 + 시각적 피드백)
+      submitBtn.innerText = "접수 중입니다...";
+      submitBtn.disabled = true;
+      submitBtn.style.backgroundColor = "#7f8c8d"; // 회색으로 변경해서 눌린 느낌 주기
+
+      const formData = new FormData(form);
       const scriptURL = "https://script.google.com/macros/s/AKfycbw1Jr6fujIMdq7UkQAJMYI1aeqwKVfFbJN4cGfHIKqX446-KadGrusdTyxIfNUvp_Pq/exec"; 
 
       fetch(scriptURL, { method: "POST", body: formData, mode: "no-cors" })
@@ -694,6 +664,11 @@
       .catch(err => {
         alert("접수 중 오류가 발생했습니다. 다시 시도해주세요.");
         console.error(err);
+        
+        // 에러 발생 시 버튼 원상복구
+        submitBtn.innerText = originalBtnText;
+        submitBtn.disabled = false;
+        submitBtn.style.backgroundColor = ""; 
       });
     });
   </script>
