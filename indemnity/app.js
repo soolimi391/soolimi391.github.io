@@ -1,5 +1,9 @@
-/* 개인회생 탕감 계산기 (MVP)
- * - 수정사항: URL 변경, 전송 로직(CORS) 개선, 결과 멘트 마케팅 최적화
+/* 개인회생 탕감 계산기 (MVP) - v4 (최종 완성형)
+ * - 수정사항:
+ * 1. 0원 변제 방지 (기존 v3 반영)
+ * 2. 1,500만원 미만 소액 채무 안내 (신뢰도 UP)
+ * 3. 총 변제액이 원금을 초과하는 오류 수정 (고소득자 대응)
+ * 4. 배우자/부양가족 관련 현실적 조언 문구 추가
  */
 
 const REGIONS = [
@@ -57,7 +61,7 @@ const state = {
     income_m: 0,
     housing_type: "",
     housing_m: 0,
-    household_total: 1, // 본인 포함
+    household_total: 1, 
     depend_mode: ""
   }
 };
@@ -467,18 +471,31 @@ function calcRough(a){
 
   // 3) 가용액
   let disposable = income - living;
-  disposable = Math.max(0, disposable);
+  
+  // [Check 1] 최소 변제금 설정 (10만원)
+  if(disposable < 10) disposable = 10;
 
-  // 4) 월 변제금
-  const mLow = Math.round(disposable * 0.65);
-  const mHigh = Math.round(disposable * 0.85);
-
-  // 5) 기간
+  // 4) 월 변제금 계산
+  let mLow = Math.round(disposable * 0.65);
+  let mHigh = Math.round(disposable * 0.85);
+  
   const monthsLow = 36;
   const monthsHigh = 60;
 
-  const payTotalLow = mLow * monthsLow;
-  const payTotalHigh = mHigh * monthsHigh;
+  // [Check 2] 고소득자(역전 현상) 방지 로직
+  // 36개월간 낼 돈이 원금보다 많으면? -> 굳이 더 낼 필요 없음. 원금/36개월 금액으로 조정.
+  const maxMonthly = Math.ceil(debt / 36); 
+  
+  // 변제금이 원금분할액보다 크면 캡을 씌움
+  if(mLow > maxMonthly) mLow = maxMonthly;
+  if(mHigh > maxMonthly) mHigh = maxMonthly;
+
+  let payTotalLow = mLow * monthsLow;
+  let payTotalHigh = mHigh * monthsHigh;
+  
+  // 총 변제액이 원금보다 크지 않도록 2차 방어
+  if(payTotalLow > debt) payTotalLow = debt;
+  if(payTotalHigh > debt) payTotalHigh = debt;
 
   // 6) 탕감액
   const reliefLow = Math.max(0, debt - payTotalHigh);
@@ -487,27 +504,45 @@ function calcRough(a){
   const rateLow = debt>0 ? Math.round((reliefLow / debt) * 100) : 0;
   const rateHigh = debt>0 ? Math.round((reliefHigh / debt) * 100) : 0;
 
-  // 7) 코멘트 (수정된 멘트 적용)
-  // ✅ 여기서 멘트를 더 긍정적이고 신청 유도형으로 바꿈
+  // 7) 등급 및 코멘트
   let grade = "탕감 예상 대상자 (신청 가능)"; 
   let memo = `가구 ${hh}인 기준 생계비(하한)를 제외하고도 변제 여력이 충분합니다.`;
 
+  // [Check 3] 채무 1,500만원 미만 (소액 채무)
+  if(debt < 1500){
+    grade = "워크아웃/신속채무조정 권장";
+    memo = `채무액이 ${debt}만원으로, 개인회생 실무 기준(약 1,500만원)보다 적습니다. 법원 절차보다 '신용회복위원회 워크아웃'이 더 유리할 수 있으니 비교 상담을 받아보세요.`;
+  }
+  // 소득 부족 (파산 유리)
+  else if(income - living <= 0){
+    grade = "개인파산 유리 (전문가 확인 필요)";
+    memo = `현재 소득이 부양가족 생계비보다 적어, 회생보다는 '개인파산(전액 탕감)'이 더 유리할 수 있습니다. 다만 재산/소득 정밀 확인이 꼭 필요합니다.`;
+  }
+  // 고소득자 (원금 100% 변제)
+  else if(payTotalLow >= debt || payTotalHigh >= debt){
+    grade = "원금 100% 변제 (이자 전액 탕감)";
+    memo = `소득이 충분하여 원금은 갚되, **높은 이자를 전액 탕감**받는 전략이 유효합니다. 연체 이자 부담을 없애는 쪽으로 접근하세요.`;
+  }
+  // 일반적인 탕감
+  else if(Math.max(rateLow, rateHigh) < 15){
+    grade = "채무 조정 가능 (상담 권장)";
+    memo += ` 탕감액이 적어 보일 수 있으나, 이자 면제 효과를 고려해야 합니다.`;
+  }
+
+  // 주거비 멘트 추가
   if(a.housing_type === "월세"){
     memo += ` (월세 추가 생계비 반영)`;
   }
 
-  if(disposable <= 0){
-    grade = "전문가 정밀 진단 필요";
-    memo = `입력하신 소득 대비 부양가족 생계비 비중이 높습니다. 정확한 가능 여부는 무료 상담으로 확인해보세요.`;
-  } else if(Math.max(rateLow, rateHigh) < 15){ // 기준을 10 -> 15로 살짝 여유있게
-    grade = "채무 조정 가능 (상담 권장)";
-    memo += ` 탕감액보다 이자 면제 및 분할 상환 효과가 클 수 있습니다. 구체적인 전략 상담이 필요합니다.`;
+  // [Check 4] 배우자/부양가족 방어 멘트 (가장 중요)
+  if(hh >= 2){
+    memo += `\n※ 배우자 소득이 있거나 부양 조건이 안 되면 변제금이 올라갈 수 있습니다.`;
   }
 
   // 전세/자가
   const housingBig = (a.housing_type==="자가" || a.housing_type==="전세") && (a.housing_m||0) >= 8000;
   if(housingBig){
-    memo += ` 보유 재산(보증금/자가) 규모에 따라 변제금이 조정될 수 있으니 상세 확인이 필요합니다.`;
+    memo += `\n※ 보유 재산(보증금/자가)이 빚보다 많으면 회생이 어려울 수 있습니다.`;
   }
 
   return {
@@ -532,10 +567,11 @@ function showResult(){
   kpiReliefAmt.textContent = `${fmtM(r.relief_amount_range_m[0])} ~ ${fmtM(r.relief_amount_range_m[1])}`;
   kpiReliefRate.textContent = `${r.relief_rate_range[0]}% ~ ${r.relief_rate_range[1]}%`;
 
-  resultNote.textContent =
-    `진단 결과: ${r.grade}\n` +
-    `${r.memo}\n` +
-    `※ 실제 결과는 소득·재산·법원 판단에 따라 달라질 수 있습니다.`;
+  // 줄바꿈 처리
+  resultNote.innerHTML =
+    `<strong>진단 결과: ${r.grade}</strong><br/><br/>` +
+    r.memo.replace(/\n/g, "<br/>") +
+    `<br/><br/><small style='opacity:0.8'>※ 실제 결과는 소득·재산·법원 판단에 따라 달라질 수 있습니다.</small>`;
 }
 
 // ---------- modal ----------
@@ -618,7 +654,7 @@ function formatPhone(prefix, rest){
   return `${prefix}-${r.slice(0,4)}-${r.slice(4)}`;
 }
 
-// ✅ [A] 수정된 구글 시트 저장용 URL
+// ✅ 구글 시트 저장용 URL
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzBboiqOjLv92xFp1Z9X4u-HRRoSlzK2vdIdomuXdzx3XYFJao3BzzGAirPpgqUmavj/exec";
 
 async function submitLead(){
@@ -627,7 +663,7 @@ async function submitLead(){
   const rr = (phoneRest.value || "").trim();
   const phone = formatPhone(pr, rr);
 
-  // ✅ [B] 유효성 검사 강화
+  // 유효성 검사
   if(!nm){ return showFormErr("성함을 입력해주세요."); }
   if(pr === "010" && digitsOnly(rr).length < 8){ return showFormErr("휴대전화 번호 전체를 입력해주세요."); }
   if(digitsOnly(rr).length < 7){ return showFormErr("연락처를 정확히 입력해주세요."); }
@@ -649,7 +685,7 @@ async function submitLead(){
 
   if(!WEB_APP_URL){
     formMsg.className = "msg";
-    formMsg.textContent = "URL 설정이 필요합니다.";
+    formMsg.textContent = "URL 설정 오류";
     return;
   }
 
@@ -657,22 +693,16 @@ async function submitLead(){
     submitLeadBtn.disabled = true;
     submitLeadBtn.textContent = "신청 중...";
 
-    // ✅ [A] CORS 문제 해결을 위한 fetch 수정
-    // 1. content-type을 text/plain으로 변경하여 preflight 요청 회피
-    // 2. 구글 시트 스크립트가 text/plain을 받아 처리하도록 되어 있으므로 정상 작동함
-    // 3. no-cors 모드를 쓰면 성공 여부를 알 수 없으므로, 기본 모드로 보내되 에러가 안나면 성공으로 간주
     await fetch(WEB_APP_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     });
 
-    // 성공 처리
     formMsg.className = "msg";
     formMsg.style.color = "#11482a";
     formMsg.textContent = "신청이 완료되었습니다. 곧 연락드릴게요.";
     
-    // 2초 후 모달 닫기
     setTimeout(()=>{
       closeModalFn();
       submitLeadBtn.disabled = false;
@@ -683,7 +713,6 @@ async function submitLead(){
     }, 2500);
 
   }catch(e){
-    // 네트워크 에러 등
     console.error(e);
     showFormErr("전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
     submitLeadBtn.disabled = false;
