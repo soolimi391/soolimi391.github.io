@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>개인회생 탕감 계산기</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brandText">
+          <div class="title">개인회생 탕감 계산기</div>
+          <div class="sub">5문항 · 30초 · 결과는 “추정”입니다</div>
+        </div>
+      </div>
+
+      <!-- ✅ 우측 상단: 전화상담 신청(=모달 오픈) -->
+      <button id="headerCallBtn" class="btn primary headerBtn" type="button">전화상담 신청</button>
+    </header>
+
+    <main class="card">
+      <div class="progress">
+        <div class="bar"><div id="barFill" class="fill"></div></div>
+        <div id="stepText" class="stepText">1/5</div>
+      </div>
+
+      <!-- STEP AREA -->
+      <section id="stepArea" class="stepArea"></section>
+
+      <!-- RESULT -->
+      <section id="resultArea" class="resultArea" style="display:none;">
+        <h2 class="h2">추정 결과</h2>
+        <p class="muted">
+          입력값 기반의 “대략적인 추정치”입니다. 실제 결과는 자료·법원 판단에 따라 달라질 수 있어요.
+        </p>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="k">예상 월 변제금(범위)</div>
+            <div id="kpiMonthly" class="v"></div>
+          </div>
+          <div class="kpi">
+            <div class="k">예상 탕감액(범위)</div>
+            <div id="kpiReliefAmt" class="v"></div>
+          </div>
+          <div class="kpi">
+            <div class="k">예상 탕감률(범위)</div>
+            <div id="kpiReliefRate" class="v"></div>
+          </div>
+        </div>
+
+        <div class="note" id="resultNote"></div>
+
+        <div class="btnRow">
+          <button id="openLeadBtn" class="btn primary" type="button">무료 상담 신청하기</button>
+          <button id="restartBtn" class="btn ghost" type="button">처음부터</button>
+        </div>
+      </section>
+
+      <div class="disclaimer">
+        ⚠️ 본 서비스는 법률 자문이 아니며, 실제 결과는 자료·법원 판단에 따라 달라질 수 있습니다.
+      </div>
+    </main>
+
+    <footer class="footer">© 개인회생 탕감 계산기</footer>
+
+    <!-- ✅ 렌딩/DB 입력: 모달 -->
+    <div id="modal" class="modal" style="display:none;">
+      <div id="modalBg" class="modalBg" aria-hidden="true"></div>
+
+      <div class="modalPanel" role="dialog" aria-modal="true" aria-label="상담 신청">
+        <div class="modalHd">
+          <div class="modalTitle">상담 신청</div>
+          <button id="closeModal" class="iconBtn" type="button" aria-label="닫기">✕</button>
+        </div>
+
+        <div class="form">
+          <div class="row">
+            <label for="name">성함</label>
+            <input id="name" type="text" placeholder="홍길동" autocomplete="name" />
+          </div>
+
+          <div class="row">
+            <label>연락처</label>
+            <div class="phone">
+              <select id="phonePrefix" aria-label="앞자리">
+                <option value="010" selected>010</option>
+                <option value="011">011</option>
+                <option value="016">016</option>
+                <option value="017">017</option>
+                <option value="018">018</option>
+                <option value="019">019</option>
+                <option value="02">02</option>
+                <option value="031">031</option>
+                <option value="032">032</option>
+              </select>
+              <input id="phoneRest"
+                     type="tel"
+                     inputmode="numeric"
+                     placeholder="12345678 (또는 01012345678 붙여넣기)"
+                     autocomplete="tel" />
+            </div>
+            <div class="mini">숫자만 입력해도 자동 정리됩니다. (예: 01012345678 → 010-1234-5678)</div>
+          </div>
+
+          <div class="row">
+            <label>상담 가능 시간</label>
+            <div class="timeBox">
+              <div class="toggle">
+                <button id="amBtn" class="btn tiny selected" type="button">오전</button>
+                <button id="pmBtn" class="btn tiny" type="button">오후</button>
+              </div>
+
+              <div class="timePick">
+                <select id="hourSel" aria-label="시"></select>
+                <div class="timeUnit">시</div>
+                <select id="minSel" aria-label="분"></select>
+                <div class="timeUnit">분</div>
+              </div>
+            </div>
+            <div class="mini">시간은 10분 단위로 선택됩니다.</div>
+          </div>
+
+          <div class="btnRow">
+            <button id="submitLeadBtn" class="btn primary" type="button">상담 신청하기</button>
+            <button id="cancelLeadBtn" class="btn ghost" type="button">취소</button>
+          </div>
+
+          <div id="formMsg" class="msg"></div>
+          <div class="mini">상담은 무료이며, 입력하신 정보는 상담 목적 범위에서만 사용됩니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="./app.js"></script>
+</body>
+</html>
